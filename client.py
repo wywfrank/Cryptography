@@ -1,7 +1,8 @@
 import requests
 # TODO: import additional modules as required
 
-gt_username = 'gburdell3'   # TODO: Replace with your gt username within quotes
+
+gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
 server_name = 'secure-shared-store'
 
 ''' <!!! DO NOT MODIFY THIS FUNCTION !!!>'''
@@ -37,7 +38,9 @@ def login():
 		post_request function given.
 		The request body should contain the user-id, statement and signed statement.
 	'''
-	return
+	userId=raw_input("Enter user Id here: ")
+	privKey=raw_input("Enter name of private key: ")
+	return 
 
 def checkin():
 	'''
@@ -84,6 +87,9 @@ def logout():
 	exit() #exit the program
 
 def main():
+	print("Main")
+	val=login()
+	print "Login done.", val
 	'''
 		# TODO: Authenticate the user by calling login.
 		If the login is successful, provide the following options to the user
@@ -102,4 +108,4 @@ def main():
 if __name__ == '__main__':
 	main()
 
-	#testing again
+	#Jennifer Liz Maisee Emma Young MichaelChao VictorP 
