@@ -1,6 +1,9 @@
 import requests
 # TODO: import additional modules as required
 from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
 server_name = 'secure-shared-store'
@@ -43,12 +46,14 @@ def login():
 	keyName=raw_input("Enter name of private key (client1): ")
 
 	statement="Client1 as User"+userId+" logs into the server"
-	f = open('userkeys/'+keyName+'.key','r')
+	key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
+	h=SHA256.new(statement)
+	signature=pkcs1_15.new(key).sign(h)
 
 
-	print statement
+	print "Signature: "+signature
 	
-	post_request(server_name,'login',statement,keyName,)
+	post_request(server_name,'login',signature,'CA.key',keyName)
 
 	return 
 

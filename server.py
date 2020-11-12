@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 # TODO: import additional modules as required
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
