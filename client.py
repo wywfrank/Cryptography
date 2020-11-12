@@ -3,6 +3,7 @@ import requests
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
+from json import loads
 
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
@@ -50,10 +51,10 @@ def login():
 	h=SHA256.new(statement)
 	signature=pkcs1_15.new(key).sign(h)
 
-
-	print "Signature: "+signature
+	data=[["userId",userId],["statement",statement],["signature",signature]]
+	body=json.loads(data)
 	
-	post_request(server_name,'login',signature,'CA.key',keyName)
+	post_request(server_name,'login',body,'node1CA.crt','node1CA.key')
 
 	return 
 
