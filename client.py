@@ -1,6 +1,6 @@
 import requests
 # TODO: import additional modules as required
-
+from Crypto.Signature import pkcs1_15
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
 server_name = 'secure-shared-store'
@@ -13,6 +13,7 @@ def post_request(server_name, action, body, node_certificate, node_key):
 		body parameter should in the json format.
 	'''
 	request_url= 'https://{}/{}'.format(server_name,action)
+	print "request_url: "+request_url
 	request_headers = {
 		'Content-Type': "application/json"
 		}
@@ -38,8 +39,17 @@ def login():
 		post_request function given.
 		The request body should contain the user-id, statement and signed statement.
 	'''
-	userId=raw_input("Enter user Id here: ")
-	privKey=raw_input("Enter name of private key: ")
+	userId=raw_input("Enter user Id here (1): ")
+	keyName=raw_input("Enter name of private key (client1): ")
+
+	statement="Client1 as User"+userId+" logs into the server"
+	f = open('/userkeys/'+keyName+'.key','r')
+
+
+	print statement
+	
+	post_request(server_name,'login',statement,keyName,)
+
 	return 
 
 def checkin():
