@@ -54,10 +54,9 @@ def login():
 
 	body=[["userId",userId],["statement",statement],["signature",signature]]
 
-	print signature
 	print body
 	
-	post_request(server_name,'login',body,'node1CA.crt','node1CA.key')
+	post_request(server_name,'login',body,'certs/node1CA.crt','certs/node1CA.key')
 
 	return 
 
@@ -107,8 +106,6 @@ def logout():
 
 def main():
 	print("Main")
-	val=login()
-	print "Login done.", val
 	'''
 		# TODO: Authenticate the user by calling login.
 		If the login is successful, provide the following options to the user
