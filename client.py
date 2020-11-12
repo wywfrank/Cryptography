@@ -43,7 +43,7 @@ def login():
 	keyName=raw_input("Enter name of private key (client1): ")
 
 	statement="Client1 as User"+userId+" logs into the server"
-	f = open('/userkeys/'+keyName+'.key','r')
+	f = open('userkeys/'+keyName+'.key','r')
 
 
 	print statement
