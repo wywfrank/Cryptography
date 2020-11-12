@@ -54,9 +54,9 @@ def login():
 
 	body=[["userId",userId],["statement",statement],["signature",signature]]
 
+	print signature
 	print body
 	json.loads(body)
-	print body
 	
 	post_request(server_name,'login',body,'node1CA.crt','node1CA.key')
 
