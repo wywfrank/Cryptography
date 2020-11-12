@@ -3,7 +3,7 @@ import requests
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
-from json import loads
+import json
 
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
