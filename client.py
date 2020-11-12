@@ -4,6 +4,7 @@ from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 import json
+import base64
 
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
@@ -49,7 +50,7 @@ def login():
 	statement="Client1 as User"+userId+" logs into the server"
 	key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 	h=SHA256.new(statement)
-	signature=pkcs1_15.new(key).sign(h)
+	signature=base64.b64encode(pkcs1_15.new(key).sign(h))
 
 	body=[["userId",userId],["statement",statement],["signature",signature]]
 
