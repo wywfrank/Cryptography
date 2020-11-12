@@ -52,7 +52,8 @@ def login():
 	signature=pkcs1_15.new(key).sign(h)
 
 	data=[["userId",userId],["statement",statement],["signature",signature]]
-	body=json.loads(data)
+	body=loads(data)
+	print body
 	
 	post_request(server_name,'login',body,'node1CA.crt','node1CA.key')
 
