@@ -16,12 +16,14 @@ class login(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement login functionality
-		print "login."
-		'''
+		print data
+		
 		# TODO: Verify the signed statement.
-			Response format for success and failure are given below. The same
-			keys ('status', 'message', 'session_token') should be used.
-		'''
+		# 	Response format for success and failure are given below. The same
+		# 	keys ('status', 'message', 'session_token') should be used.
+		
+		
+		
 		if success:
 			session_token = '' # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions

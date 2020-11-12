@@ -52,7 +52,11 @@ def login():
 	h=SHA256.new(statement)
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(h))).decode('utf-8')
 
-	body=[["userId",userId],["statement",statement],["signature",signature]]
+	body={
+		'userId':userId,
+		'statement':statement,
+		'signature':signature,
+	}
 
 	print body
 	
