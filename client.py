@@ -106,6 +106,7 @@ def logout():
 
 def main():
 	print("Main")
+	login()
 	'''
 		# TODO: Authenticate the user by calling login.
 		If the login is successful, provide the following options to the user
