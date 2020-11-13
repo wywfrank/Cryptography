@@ -58,7 +58,7 @@ def login():
 		'signature':signature,
 	}'''
 
-	body=json.loads()
+	body=json.loads(data)
 	print body
 	
 	post_request(server_name,'login',body,'certs/node1CA.crt','certs/node1CA.key')
