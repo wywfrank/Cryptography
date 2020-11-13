@@ -55,10 +55,10 @@ def login():
 	data={
 		'userId':userId,
 		'statement':statement,
-		# 'signature':signature,
+		'signature':signature,
 	}
 
-	body=json.loads(data)
+	body=json.dumps(data)
 	print body
 	
 	post_request(server_name,'login',body,'certs/node1CA.crt','certs/node1CA.key')
