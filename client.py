@@ -55,7 +55,7 @@ def login():
 	data={
 		'userId':userId,
 		'statement':statement,
-		'signature':signature,
+		# 'signature':signature,
 	}
 
 	body=json.loads(data)
