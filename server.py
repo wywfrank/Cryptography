@@ -17,7 +17,7 @@ class login(Resource):
 		data = request.get_json()
 		# TODO: Implement login functionality
 		print data
-		print data['signature']
+		print data['statement']
 		
 		# TODO: Verify the signed statement.
 		# 	Response format for success and failure are given below. The same
