@@ -4,6 +4,7 @@ from flask_restful import Resource, Api
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
+import json
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
