@@ -52,16 +52,16 @@ def login():
 	h=SHA256.new(statement)
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(h))).decode('utf-8')
 
-	body={
+	data='''{
 		'userId':userId,
 		'statement':statement,
 		'signature':signature,
-	}
+	}'''
 
+	body=json.loads()
 	print body
 	
 	post_request(server_name,'login',body,'certs/node1CA.crt','certs/node1CA.key')
-
 	return 
 
 def checkin():
