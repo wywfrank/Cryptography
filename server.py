@@ -33,7 +33,7 @@ class login(Resource):
 		print "key is generated"
 		# statement.decode("utf-8")
 		# unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
-		h = SHA256.new(statement).decode("utf-8")
+		h = SHA256.new(statement.decode("utf-8"))
 		print "h is generated"
 		signature=body["signature"]
 		print "signature processed"
