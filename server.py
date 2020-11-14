@@ -29,7 +29,7 @@ class login(Resource):
 		key = RSA.import_key(open(keyaddr).read())
 		print "key is generated"
 		statement = body["statement"]
-		unicodedata.normalize('NFKD',statement).encode('acsii','ignore')
+		unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
 		h = SHA256.new(statement)
 		print "h is generated"
 		signature=body["signature"]
