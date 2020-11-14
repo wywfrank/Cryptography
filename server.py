@@ -21,19 +21,16 @@ class login(Resource):
 		body=json.loads(data)
 		print body
 		statement = body["statement"]
-		print statement
 		
 		# TODO: Verify the signed statement.
 		# 	Response format for success and failure are given below. The same
 		# 	keys ('status', 'message', 'session_token') should be used.
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
-		print "key addr is "+keyaddr
 		key = RSA.importKey(open(keyaddr,'r'))
-		print "h = "
 		h = SHA256.new(str(statement))
 		print h
 		signature=str(body["signature"])
-		print "signature processed"
+		print signature
 		success=1
 		try:
 			print "trying"
