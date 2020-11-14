@@ -6,6 +6,7 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 import json
+import base64
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
@@ -29,7 +30,7 @@ class login(Resource):
 		key = RSA.importKey(open(keyaddr,'r'))
 		h = SHA256.new(str(statement))
 		print h
-		signature=(body["signature"]).encode("utf-8")
+		signature=base64.decodebytes((body["signature"]).encode("utf-8"))
 		print signature
 		success=1
 		try:
