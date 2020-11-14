@@ -25,8 +25,11 @@ class login(Resource):
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
 		print keyaddr
 		key = RSA.import_key(open(keyaddr).read())
+		print key
 		h = SHA256.new(body["statement"])
+		print h
 		signature=body["signature"]
+		print signature
 		try:
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
