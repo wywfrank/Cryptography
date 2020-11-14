@@ -25,9 +25,11 @@ class login(Resource):
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
 		print "key addr is "+keyaddr
 		key = RSA.import_key(open(keyaddr).read())
-		print "key is "+key
+		print "key is "
+		print key
 		h = SHA256.new(body["statement"])
-		print "h is "+h
+		print "h is "
+		print h
 		signature=body["signature"]
 		print signature
 		try:
