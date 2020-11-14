@@ -45,7 +45,7 @@ def login():
 		The request body should contain the user-id, statement and signed statement.
 	'''
 	userId=raw_input("Enter user Id here (1): ")
-	keyName=raw_input("Enter name of private key (client1): ")
+	keyName=raw_input("Enter name of private key (user1): ")
 
 	statement="client1 as user"+userId+" logs into the server"
 	key=RSA.importKey(open('userkeys/'+keyName+'.key','rb'))
