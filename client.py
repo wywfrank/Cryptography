@@ -110,7 +110,7 @@ def logout():
 
 def main():
 	login()
-	f = open(gt_username."r")
+	f = open(gt_username,"r")
 	jsonfile=json.load(f)
 	print jsonfile
 	option=''
