@@ -49,7 +49,7 @@ def login():
 	statement="client1 as user"+userId+" logs into the server"
 	key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 	h=SHA256.new(statement)
-	signature=(base64.b64encode(pkcs1_15.new(key).sign(h))).decode('utf-8')
+	signature=(pkcs1_15.new(key).sign(h)).decode('utf-8')#(base64.b64encode(pkcs1_15.new(key).sign(h))).decode('utf-8')
 
 	data={
 		'userId':userId,
