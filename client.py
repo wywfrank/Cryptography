@@ -116,7 +116,7 @@ def main():
 	if jsonfile["status"]!=200: 
 		exit()
 	option=''
-	while (option != '5' and jsonfile["status"]=200):
+	while (option != '5' and jsonfile["status"]==200):
 		option=raw_input('''Enter the option's number: 
 				1. Checkin
 				2. Checkout
