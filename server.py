@@ -23,11 +23,11 @@ class login(Resource):
 		# 	Response format for success and failure are given below. The same
 		# 	keys ('status', 'message', 'session_token') should be used.
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
-		print keyaddr
+		print "key addr is "+keyaddr
 		key = RSA.import_key(open(keyaddr).read())
-		print key
+		print "key is "+key
 		h = SHA256.new(body["statement"])
-		print h
+		print "h is "+h
 		signature=body["signature"]
 		print signature
 		try:
