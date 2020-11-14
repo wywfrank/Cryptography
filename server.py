@@ -20,13 +20,15 @@ class login(Resource):
 		# TODO: Implement login functionality
 		body=json.loads(data)
 		print body
+		statement = body["statement"]
+		print statement
 		
 		# TODO: Verify the signed statement.
 		# 	Response format for success and failure are given below. The same
 		# 	keys ('status', 'message', 'session_token') should be used.
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
 		print "key addr is "+keyaddr
-		key = RSA.import_key(open(keyaddr).read())
+		key = RSA.importKey(open(keyaddr,'r'))
 		print "key is generated"
 		statement = body["statement"]
 		unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
