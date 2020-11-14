@@ -117,7 +117,7 @@ def main():
 			4. Delete
 			5. Logout
 	''')
-	if option==1: login()
+	if option=='1': login()
 	'''
 		# TODO: Authenticate the user by calling login.
 		If the login is successful, provide the following options to the user
