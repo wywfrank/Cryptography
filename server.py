@@ -4,6 +4,7 @@ from flask_restful import Resource, Api
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
+from Crypto.Cipher import AES
 import json
 import unicodedata
 
@@ -30,8 +31,8 @@ class login(Resource):
 		print "key addr is "+keyaddr
 		key = RSA.importKey(open(keyaddr,'r'))
 		print "key is generated"
-		statement = body["statement"]
-		unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
+		statement.decode("utf8")
+		# unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
 		h = SHA256.new(statement)
 		print "h is generated"
 		signature=body["signature"]
