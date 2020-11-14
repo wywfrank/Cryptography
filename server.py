@@ -18,14 +18,21 @@ class login(Resource):
 		data = request.get_json()
 		# TODO: Implement login functionality
 		body=json.loads(data)
-		print body
-		print body['statement']
 		
 		# TODO: Verify the signed statement.
 		# 	Response format for success and failure are given below. The same
 		# 	keys ('status', 'message', 'session_token') should be used.
-		
-		
+		keyaddr="userpublickeys/user"+body["userId"]+".pub"
+		print keyaddr
+		key = RSA.import_key(open(keyaddr).read())
+		h = SHA256.new(body["statement"])
+		signature=body["signature"]
+		try:
+			pkcs1_15.new(key).verify(h, signature)
+			print "The signature is valid."
+		except (ValueError, TypeError):
+			print "The signature is not valid."
+
 		
 		if success:
 			session_token = '' # TODO: Generate session token
