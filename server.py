@@ -38,6 +38,7 @@ class login(Resource):
 			print "trying"
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
+			success=1
 		except (ValueError, TypeError):
 			print "The signature is not valid."
 
