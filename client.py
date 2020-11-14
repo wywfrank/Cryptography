@@ -48,7 +48,7 @@ def login():
 	keyName=raw_input("Enter name of private key (user1): ")
 
 	statement="client1 as user"+userId+" logs into the server"
-	key=RSA.importKey(open('userkeys/'+keyName+'.key').read)
+	key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 	h=SHA256.new(statement)
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(h))).decode('utf-8')
 
