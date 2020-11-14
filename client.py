@@ -112,9 +112,11 @@ def main():
 	login()
 	f = open(gt_username,"r")
 	jsonfile=json.load(f)
-	print jsonfile
+	print jsonfile["status"]
+	if jsonfile["status"]!=200: 
+		exit()
 	option=''
-	while (option != '5'):
+	while (option != '5' and ):
 		option=raw_input('''Enter the option's number: 
 				1. Checkin
 				2. Checkout
