@@ -6,7 +6,6 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 import json
-import unicodedata
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
@@ -30,14 +29,13 @@ class login(Resource):
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
 		print "key addr is "+keyaddr
 		key = RSA.importKey(open(keyaddr,'r'))
-		print "key is generated"
-		# statement.decode("utf-8")
-		# unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
+		print "h = "
 		h = SHA256.new(str(statement))
-		print "h is generated"
+		print h
 		signature=body["signature"]
 		print "signature processed"
 		try:
+			print "trying"
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
 		except (ValueError, TypeError):
