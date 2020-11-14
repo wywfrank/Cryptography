@@ -29,6 +29,7 @@ def post_request(server_name, action, body, node_certificate, node_key):
 	)
 	with open(gt_username, 'w') as f:
 		f.write(response.content)
+	print response.content
 	return response
 
 ''' You can begin modification from here'''

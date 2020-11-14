@@ -7,6 +7,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 import json
 import base64
+import secrets
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
@@ -29,12 +30,10 @@ class login(Resource):
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
 		key = RSA.importKey(open(keyaddr,'r'))
 		h = SHA256.new(str(statement))
-		print h
 		signature=base64.standard_b64decode((body["signature"]).encode("utf-8"))
-		print signature
 		success=1
+		#must ensure user ID unique
 		try:
-			print "trying"
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
 		except (ValueError, TypeError):
@@ -43,7 +42,7 @@ class login(Resource):
 
 		
 		if success:
-			session_token = '' # TODO: Generate session token
+			session_token = secrets.token_bytes() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
 			response = {
 				'status': 200,
