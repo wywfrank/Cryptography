@@ -31,9 +31,9 @@ class login(Resource):
 		print "key addr is "+keyaddr
 		key = RSA.importKey(open(keyaddr,'r'))
 		print "key is generated"
-		statement.decode("utf8")
+		# statement.decode("utf-8")
 		# unicodedata.normalize('NFKD',statement).encode('ascii','ignore')
-		h = SHA256.new(statement)
+		h = SHA256.new(statement).decode("utf-8")
 		print "h is generated"
 		signature=body["signature"]
 		print "signature processed"
