@@ -29,7 +29,7 @@ class login(Resource):
 		key = RSA.importKey(open(keyaddr,'r'))
 		h = SHA256.new(str(statement))
 		print h
-		signature=str(body["signature"])
+		signature=(body["signature"]).encode("utf-8")
 		print signature
 		success=1
 		try:

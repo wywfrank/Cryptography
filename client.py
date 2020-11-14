@@ -18,7 +18,6 @@ def post_request(server_name, action, body, node_certificate, node_key):
 		body parameter should in the json format.
 	'''
 	request_url= 'https://{}/{}'.format(server_name,action)
-	print "request_url: "+request_url
 	request_headers = {
 		'Content-Type': "application/json"
 		}
