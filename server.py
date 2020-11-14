@@ -34,13 +34,14 @@ class login(Resource):
 		print h
 		signature=body["signature"]
 		print "signature processed"
+		success=1
 		try:
 			print "trying"
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
-			success=1
 		except (ValueError, TypeError):
 			print "The signature is not valid."
+			success=0
 
 		
 		if success:
