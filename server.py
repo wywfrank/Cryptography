@@ -30,7 +30,7 @@ class login(Resource):
 		key = RSA.importKey(open(keyaddr,'r'))
 		h = SHA256.new(str(statement))
 		print h
-		signature=base64.decodebytes((body["signature"]).encode("utf-8"))
+		signature=base64.standard_b64decode((body["signature"]).encode("utf-8"))
 		print signature
 		success=1
 		try:
