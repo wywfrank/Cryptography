@@ -29,7 +29,6 @@ def post_request(server_name, action, body, node_certificate, node_key):
 	)
 	with open(gt_username, 'w') as f:
 		f.write(response.content)
-	print response.content
 	return response
 
 ''' You can begin modification from here'''
@@ -110,6 +109,10 @@ def logout():
 	exit() #exit the program
 
 def main():
+	login()
+	f = open(gt_username."r")
+	jsonfile=json.load(f)
+	print jsonfile
 	option=''
 	while (option != '5'):
 		option=raw_input('''Enter the option's number: 
@@ -118,8 +121,10 @@ def main():
 				3. Grant
 				4. Delete
 				5. Logout \n
+				\n
 		''')
 		if option=='1': login()
+		if option=='2': checkin()
 
 	
 	'''
