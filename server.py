@@ -7,7 +7,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 import json
 import base64
-import secrets
+from uuid import uuid4
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
@@ -42,7 +42,7 @@ class login(Resource):
 
 		
 		if success:
-			session_token = secrets.token_bytes() # TODO: Generate session token
+			session_token = uuid4() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
 			response = {
 				'status': 200,
