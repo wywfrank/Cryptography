@@ -110,14 +110,18 @@ def logout():
 	exit() #exit the program
 
 def main():
-	option=raw_input('''Enter the option's number: \n 
-			1. Checkin
-			2. Checkout
-			3. Grant
-			4. Delete
-			5. Logout
-	''')
-	if option=='1': login()
+	option=''
+	while (option != '5'):
+		option=raw_input('''Enter the option's number: 
+				1. Checkin
+				2. Checkout
+				3. Grant
+				4. Delete
+				5. Logout \n
+		''')
+		if option=='1': login()
+
+	
 	'''
 		# TODO: Authenticate the user by calling login.
 		If the login is successful, provide the following options to the user
@@ -136,4 +140,3 @@ def main():
 if __name__ == '__main__':
 	main()
 
-	#Jennifer Liz Maisee Emma Young MichaelChao VictorP 
