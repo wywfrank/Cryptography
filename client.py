@@ -51,6 +51,7 @@ def login():
 	key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 	h=SHA256.new(statement)
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(h))).decode('utf-8')
+	key=''
 
 	data={
 		'userId':userId,
@@ -109,8 +110,14 @@ def logout():
 	exit() #exit the program
 
 def main():
-	print("Main")
-	login()
+	option=raw_input('''Enter the option's number: \n 
+			1. Checkin
+			2. Checkout
+			3. Grant
+			4. Delete
+			5. Logout
+	''')
+	if option==1: login()
 	'''
 		# TODO: Authenticate the user by calling login.
 		If the login is successful, provide the following options to the user
