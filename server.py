@@ -32,7 +32,7 @@ class login(Resource):
 		print "h = "
 		h = SHA256.new(str(statement))
 		print h
-		signature=body["signature"]
+		signature=str(body["signature"])
 		print "signature processed"
 		success=1
 		try:
