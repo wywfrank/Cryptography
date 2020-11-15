@@ -110,9 +110,7 @@ def logout():
 
 def main():
 	login()
-	f = open(gt_username,"r")
-	jsonfile=json.load(f)
-	print jsonfile["status"]
+	print (json.load(open(gt_username,"r")))["status"]
 	if jsonfile["status"]!=200: 
 		exit()
 	option=''
