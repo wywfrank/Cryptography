@@ -8,9 +8,12 @@ from Crypto.Cipher import AES
 import json
 import base64
 from uuid import uuid4
+import sqlite3
+from sqlite3 import Error
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
+
 
 class welcome(Resource):
 	def get(self):
@@ -129,7 +132,17 @@ api.add_resource(logout, '/logout')
 def main():
 	secure_shared_service.run(debug=True)
 
+def create_connection(db_file):
+	conn = None
+	try:
+		conn=sqlite3.connect(db_file)
+		print(sqlite3.version)
+	except Error as e:
+		print(e)
+	finally:
+		if conn:
+			conn.close()
+
 if __name__ == '__main__':
 	main()
-
-#testing v2 testing again!!
+	create_connection(r"pythonsqlite.db")
