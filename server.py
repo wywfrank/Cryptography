@@ -129,20 +129,21 @@ api.add_resource(grant, '/grant')
 api.add_resource(delete, '/delete')
 api.add_resource(logout, '/logout')
 
-def main():
-	secure_shared_service.run(debug=True)
-
 def create_connection(db_file):
 	conn = None
 	try:
 		conn=sqlite3.connect(db_file)
-		print(sqlite3.version)
+		print sqlite3.version
 	except Error as e:
-		print(e)
+		print e
 	finally:
 		if conn:
 			conn.close()
+			
+def main():
+	secure_shared_service.run(debug=True)
+
 
 if __name__ == '__main__':
-	main()
 	create_connection(r"pythonsqlite.db")
+	main()
