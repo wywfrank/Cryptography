@@ -75,9 +75,9 @@ class checkout(Resource):
 
 class checkin(Resource):
 	def post(self):
-		print "checkin"
 		data = request.get_json()
 		# TODO: Implement checkin functionality
+		print data
 		return jsonify(response)
         '''
 		Expected response status codes:

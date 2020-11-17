@@ -67,7 +67,15 @@ def checkin():
 		Send the request to server with required parameters (action = 'checkin') using post_request().
 		The request body should contain the required parameters to ensure the file is sent to the server.
 	'''
-	print "checkin"
+	did=raw_input("Enter Document ID:")
+	flag=raw_input("Enter security flag (1-confidentiality, 2-integrity):")
+	data={
+		'did':did,
+		'flag':flag,
+	}
+	body=json.dumps(data)
+
+	post_request(server_name,'checkin',body,'certs/node1CA.crt','certs/node1CA.key')
 	
 	return
 
