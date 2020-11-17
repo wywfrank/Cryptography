@@ -206,7 +206,7 @@ def main():
 	'''
 	conn = create_connection(db)
 	if conn is not None:
-		create_table(conn, sql_create_AUTH_table)
+		create_table(conn, sql_create_OWNER_table)
 		conn.close()
 	else:
 		print("Error! Cannot create the database connection.")
