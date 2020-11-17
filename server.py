@@ -44,7 +44,7 @@ def search_owner(conn,param):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
-	result=cur.fetchone()[0]
+	result=cur.fetchone()
 	conn.commit()
 	print result
 	return result
