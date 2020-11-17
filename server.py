@@ -28,14 +28,14 @@ class welcome(Resource):
 
 class checkin(Resource):
 	def post(self):
-		print "Checkin"
 		data = request.get_json()
-		body=json.loads(data)
 		# TODO: Implement checkin functionality
+		body=json.loads(data)
 		print body["did"]
-		path="documents/"+body["did"]+".txt"
-		print path
-		f = open(path,"w")
+
+		row=('1234562','user123123',1)
+		insert(conn,row)
+		f = open("documents/"+body["did"],"w")
 		print body["contents"]
 		f.write(body["contents"])
 		f.close()
@@ -193,8 +193,6 @@ def main():
 		create_table(conn, sql_create_AUTH_table)
 	else:
 		print("Error! Cannot create the database connection.")
-	row=('515','user1',1)
-	insert(conn,row)
 
 	secure_shared_service.run(debug=True)
 
