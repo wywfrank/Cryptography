@@ -38,7 +38,6 @@ def insert_session(conn,row):
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
-	conn.close()
 	return 
 
 def search_session(conn,session_token):
@@ -103,7 +102,8 @@ class login(Resource):
 		if success:
 			session_token = uuid4() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
-			insert_session(create_connection(db),(session_token,body["userId"]))
+			conn=create_connection(db)
+			insert_session(conn,(session_token,str(body["userId"])))
 			response = {
 				'status': 200,
 				'message': 'Login Successful',
