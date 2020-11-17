@@ -29,7 +29,6 @@ def insert_owner(conn,row):
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
-	conn.close()
 	return 
 
 def insert_session(conn,row):
@@ -44,11 +43,11 @@ def search_session(conn,session_token):
 	sql='''SELECT userId FROM SESSION WHERE session_token=?
 		'''
 	cur=conn.cursor()
-	c=cur.execute(sql,session_token)
-	print c
+	cur.execute(sql,session_token)
+	result=cur.fetchone()[0]
 	conn.commit()
-	print c
-	return c
+	print result
+	return str(result)
 
 class welcome(Resource):
 	def get(self):
@@ -61,6 +60,7 @@ class checkin(Resource):
 		body=json.loads(data)
 		conn=create_connection(db)
 		userId=search_session(conn,(str(body["session_token"]),))
+		print 'userId '+userId
 		row=(body["did"],'user1AAA',1)
 		insert_owner(conn,row)
 			
