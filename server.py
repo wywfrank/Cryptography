@@ -153,12 +153,12 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print e
 
-def insert(conn,insert):
+def insert(conn,row):
 	sql='''INSERT INTO AUTH(did,owner,flag)
 		VALUES(?,?,?)
 	'''
 	cur=conn.cursor()
-	cur.execute(sql,insert)
+	cur.execute(sql,row)
 	conn.commit()
 	return 
 
@@ -176,7 +176,7 @@ def main():
 	else:
 		print("Error! Cannot create the database connection.")
 	with conn:
-		row={'1','user1','1'}
+		row={1,'user1',1}
 		insert(conn,row)
 
 	secure_shared_service.run(debug=True)
