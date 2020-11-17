@@ -30,13 +30,14 @@ class checkin(Resource):
 	def post(self):
 		print "Checkin"
 		data = request.get_json()
+		body=json.loads(data)
 		# TODO: Implement checkin functionality
-		print data
-		path="documents/"+data["did"]+".txt"
+		print body["did"]
+		path="documents/"+body["did"]+".txt"
 		print path
 		f = open(path,"w")
-		print data["contents"]
-		f.write(data["contents"])
+		print body["contents"]
+		f.write(body["contents"])
 		f.close()
 		print "Done checkin"
 		return #jsonify(response)
