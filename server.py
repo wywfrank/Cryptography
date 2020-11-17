@@ -59,9 +59,7 @@ class checkin(Resource):
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		conn=create_connection(db)
-		userId=search_session(conn,(str(body["session_token"]),))
-		print 'userId '+userId
-		row=(body["did"],'user1AAA',1)
+		row=(body["did"],search_session(conn,(str(body["session_token"]),)),body["flag"])
 		insert_owner(conn,row)
 			
 		f = open("documents/"+body["did"],"w")
