@@ -31,18 +31,35 @@ def insert_owner(conn,row):
 	conn.commit()
 	return 
 
+def insert_session(conn,row):
+	sql='''INSERT INTO SESSION(session_token,userId,timer)
+		VALUES(?,?,?)'''
+	cur=conn.cursor()
+	cur.execute(sql,row)
+	conn.commit()
+	return 
+
+def search_session(conn,session_token):
+	sql='''SELECT userId FROM SESSION WHERE session_token=?
+		'''
+	cur=conn.cursor()
+	c=cur.execute(sql,session_token)
+	conn.commit()
+	print c
+	return c
+
 class welcome(Resource):
 	def get(self):
 		return "Welcome to the secure shared server!"
 
 class checkin(Resource):
-
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		conn=create_connection(db)
-		row=('AAA','user1AAA',1)
+		userId=search_session(conn,body["session_token"])
+		row=(body["did"],'user1AAA',1)
 		insert_owner(conn,row)
 			
 		f = open("documents/"+body["did"],"w")
@@ -63,9 +80,7 @@ class login(Resource):
 		data = request.get_json()
 		# TODO: Implement login functionality
 		body=json.loads(data)
-		print body
 		statement = body["statement"]
-		
 		# TODO: Verify the signed statement.
 		# 	Response format for success and failure are given below. The same
 		# 	keys ('status', 'message', 'session_token') should be used.
@@ -74,18 +89,18 @@ class login(Resource):
 		h = SHA256.new(str(statement))
 		signature=base64.standard_b64decode((body["signature"]).encode("utf-8"))
 		success=1
-		#must ensure user ID unique
+		#must ensure user ID unique!!!
 		try:
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
 		except (ValueError, TypeError):
 			print "The signature is not valid."
 			success=0
-
 		
 		if success:
 			session_token = uuid4() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
+			insert_session(session_token,body["userId"],null)
 			response = {
 				'status': 200,
 				'message': 'Login Successful',

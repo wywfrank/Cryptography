@@ -45,7 +45,6 @@ def login():
 		post_request function given.
 		The request body should contain the user-id, statement and signed statement.
 	'''
-
 	userId=raw_input("Enter user Id here (1): ")
 	keyName=raw_input("Enter name of private key (user1): ")
 	statement="client1 as user"+userId+" logs into the server"
@@ -53,7 +52,7 @@ def login():
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(SHA256.new(statement)))).decode('utf-8')
 	key=''
 	data={
-		'userId':userId,
+		'userId': userId,
 		'statement':statement,
 		'signature':signature,
 	}
@@ -78,6 +77,7 @@ def checkin():
 		'did':did,
 		'flag':flag,
 		'contents': fin.read(),
+		'session_token':json.load(open(gt_username,"r")))["session_token"],
 
 	}
 	body=json.dumps(data)
