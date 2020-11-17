@@ -38,6 +38,7 @@ def insert_session(conn,row):
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
+	conn.close()
 	return 
 
 def search_session(conn,session_token):
@@ -45,6 +46,7 @@ def search_session(conn,session_token):
 		'''
 	cur=conn.cursor()
 	c=cur.execute(sql,session_token)
+	print c
 	conn.commit()
 	conn.close()
 	print c
@@ -60,7 +62,7 @@ class checkin(Resource):
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		conn=create_connection(db)
-		userId=search_session(conn,body["session_token"])
+		userId=search_session(conn,str(body["session_token"]))
 		row=(body["did"],'user1AAA',1)
 		insert_owner(conn,row)
 			
