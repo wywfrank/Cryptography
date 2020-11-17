@@ -164,6 +164,8 @@ def insert(conn,row):
 def main():
 	database = r"pythonsqlite.db"
 	sql_create_AUTH_table = '''
+		DELETE TABLE AUTH;
+		VACUUM;
 		CREATE TABLE IF NOT EXISTS AUTH 
 		(did text,
 		owner text,
