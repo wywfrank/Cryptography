@@ -77,7 +77,7 @@ def checkin():
 		'did':did,
 		'flag':flag,
 		'contents': fin.read(),
-		'session_token':json.load(open(gt_username,"r")))["session_token"],
+		'session_token':json.load(open(gt_username,"r"))["session_token"],
 
 	}
 	body=json.dumps(data)
