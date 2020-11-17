@@ -39,15 +39,26 @@ def insert_session(conn,row):
 	conn.commit()
 	return 
 
+def search_owner(conn,param):
+	sql='''SELECT did FROM OWNER WHERE userId!=? AND did=?
+		'''
+	cur=conn.cursor()
+	cur.execute(sql,param)
+	result=cur.fetchone()[0]
+	conn.commit()
+	print result
+	return result
+
 def search_session(conn,session_token):
 	sql='''SELECT userId FROM SESSION WHERE session_token=?
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,session_token)
-	result=cur.fetchone()[0]
+	userId=cur.fetchone()[0]
 	conn.commit()
-	print result
-	return str(result)
+	print userId
+	return userId
+
 
 class welcome(Resource):
 	def get(self):
@@ -59,15 +70,31 @@ class checkin(Resource):
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		conn=create_connection(db)
-		row=(body["did"],search_session(conn,(str(body["session_token"]),)),body["flag"])
-		insert_owner(conn,row)
-			
-		f = open("documents/"+body["did"],"w")
-		print body["contents"]
-		f.write(body["contents"])
-		f.close()
-		print "Done checkin"
-		return #jsonify(response)
+		userId=search_session(conn,(str(body["session_token"]))
+		did=search_owner(conn,(userId,body["did"]))
+
+		if did is None:
+			row=(body["did"],(userId,),body["flag"])
+			insert_owner(conn,row)
+				
+			f = open("documents/"+body["did"],"w")
+			print body["contents"]
+			f.write(body["contents"])
+			f.close()
+			print "Done checkin"
+			response= {
+				'status': 200,
+				'message': 'File Write Successful',
+				'session_token': session_token,
+			}
+		else:
+			response= {
+				'status': 702,
+				'message': 'Access Denied',
+				'session_token': session_token,
+			}
+		
+		return jsonify(response)
         '''
 		Expected response status codes:
 		1) 200 - Document Successfully checked in
