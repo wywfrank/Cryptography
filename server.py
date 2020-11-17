@@ -10,14 +10,60 @@ import base64
 from uuid import uuid4
 import sqlite3
 from sqlite3 import Error
+# import os
+# from flask import Flask, request, redirect, url_for, send_from_directory
+# from werkzeug import secure_filename
+
 
 secure_shared_service = Flask(__name__)
 api = Api(secure_shared_service)
+
+# UPLOAD_FOLDER = 'documents'
+# ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+# secure_shared_service.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 class welcome(Resource):
 	def get(self):
 		return "Welcome to the secure shared server!"
+
+class checkin(Resource):
+
+	# def allowed_file(filename):
+	# 	return filename[-3:].lower() in ALLOWED_EXTENSIONS
+	# @app.route('/', methods=['GET', 'POST'])
+	# def upload_file():
+    # if request.method == 'POST':
+    #     file = request.files['file']
+    #     if file and allowed_file(file.filename):
+    #         print '**found file', file.filename
+    #         filename = secure_filename(file.filename)
+    #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    #         # for browser, add 'redirect' function on top of 'url_for'
+    #         return url_for('uploaded_file',
+    #                                 filename=filename)
+    # return '''
+    # <!doctype html>
+    # <title>Upload new File</title>
+    # <h1>Upload new File</h1>
+    # <form action="" method=post enctype=multipart/form-data>
+	# 	<p><input type=file name=file>
+	# 		<input type=submit value=Upload>
+    # </form>
+    # '''
+
+	def post(self):
+		data = request.get_json()
+		# TODO: Implement checkin functionality
+		print data
+
+		return jsonify(response)
+        '''
+		Expected response status codes:
+		1) 200 - Document Successfully checked in
+		2) 702 - Access denied to check in
+		3) 700 - Other failures
+	'''
 
 class login(Resource):
 	def post(self):
@@ -73,18 +119,7 @@ class checkout(Resource):
 		5) 700 - Other failures
         '''
 
-class checkin(Resource):
-	def post(self):
-		data = request.get_json()
-		# TODO: Implement checkin functionality
-		print data
-		return jsonify(response)
-        '''
-		Expected response status codes:
-		1) 200 - Document Successfully checked in
-		2) 702 - Access denied to check in
-		3) 700 - Other failures
-	'''
+
 
 class grant(Resource):
 	def post(self):

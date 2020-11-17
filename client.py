@@ -35,14 +35,15 @@ def post_request(server_name, action, body, node_certificate, node_key):
 def login():
 	'''
 		# TODO: Accept the
-		 - user-id
-		 - name of private key file(should be
+		- user-id
+		- name of private key file(should be
 		present in the userkeys folder) of the user.
 		Generate the login statement as given in writeup and its signature.
 		Send request to server with required parameters (action = 'login') using
 		post_request function given.
 		The request body should contain the user-id, statement and signed statement.
 	'''
+	
 	userId=raw_input("Enter user Id here (1): ")
 	keyName=raw_input("Enter name of private key (user1): ")
 	statement="client1 as user"+userId+" logs into the server"
@@ -62,8 +63,8 @@ def login():
 def checkin():
 	'''
 		# TODO: Accept the
-		 - DID
-		 - security flag (1 for confidentiality  and 2 for integrity)
+		- DID
+		- security flag (1 for confidentiality  and 2 for integrity)
 		Send the request to server with required parameters (action = 'checkin') using post_request().
 		The request body should contain the required parameters to ensure the file is sent to the server.
 	'''
