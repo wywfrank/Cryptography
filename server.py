@@ -70,7 +70,8 @@ class checkin(Resource):
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		conn=create_connection(db)
-		userId=search_session(conn,(str(body["session_token"]),))
+		session_token=str(body["session_token"])
+		userId=search_session(conn,(session_token,))
 		print "userId "+userId
 		did=search_owner(conn,(userId,body["did"]))
 
