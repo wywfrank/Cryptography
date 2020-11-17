@@ -22,25 +22,25 @@ UPLOAD_FOLDER = 'documents'
 secure_shared_service.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+def insert(conn,row):
+	sql='''INSERT INTO AUTH(did,owner,flag)
+		VALUES(?,?,?)'''
+	cur=conn.cursor()
+	cur.execute(sql,row)
+	conn.commit()
+	return 
+
 class welcome(Resource):
 	def get(self):
 		return "Welcome to the secure shared server!"
 
 class checkin(Resource):
-	def insert(conn,row):
-		sql='''INSERT INTO AUTH(did,owner,flag)
-			VALUES(?,?,?)'''
-		cur=conn.cursor()
-		cur.execute(sql,row)
-		conn.commit()
-		return 
 
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		print body["did"]
-
 		row=('1234562','user123123',1)
 		insert(create_connection(r"pythonsqlite.db"),row)
 			
