@@ -20,7 +20,7 @@ api = Api(secure_shared_service)
 
 UPLOAD_FOLDER = 'documents'
 secure_shared_service.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-conn=create_connection(r"pythonsqlite.db")
+db=r"pythonsqlite.db"
 
 
 def insert_owner(conn,row):
@@ -29,6 +29,7 @@ def insert_owner(conn,row):
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
+	conn.close()
 	return 
 
 def insert_session(conn,row):
@@ -37,6 +38,7 @@ def insert_session(conn,row):
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
+	conn.close()
 	return 
 
 def search_session(conn,session_token):
@@ -45,6 +47,7 @@ def search_session(conn,session_token):
 	cur=conn.cursor()
 	c=cur.execute(sql,session_token)
 	conn.commit()
+	conn.close()
 	print c
 	return c
 
@@ -57,6 +60,7 @@ class checkin(Resource):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
+		conn=create_connection(db)
 		userId=search_session(conn,body["session_token"])
 		row=(body["did"],'user1AAA',1)
 		insert_owner(conn,row)
@@ -99,7 +103,7 @@ class login(Resource):
 		if success:
 			session_token = uuid4() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
-			insert_session(session_token,(session_token,body["userId"]))
+			insert_session(create_connection(db),(session_token,body["userId"]))
 			response = {
 				'status': 200,
 				'message': 'Login Successful',
