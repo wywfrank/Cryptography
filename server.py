@@ -32,9 +32,9 @@ class checkin(Resource):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		print data
-		file = data['contents']
 		path="documents/"+data['did']+".txt"
 		f = open(path,"w")
+		f.write(data['contents'])
 		f.close()
 		print "Done checkin"
 		return #jsonify(response)
