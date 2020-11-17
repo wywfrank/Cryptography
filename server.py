@@ -31,10 +31,11 @@ class checkin(Resource):
 		print "Checkin"
 		data = request.get_json()
 		# TODO: Implement checkin functionality
-		print data
-		path="documents/"+data['did']+".txt"
+		path="documents/"+data["did"]+".txt"
+		print path
 		f = open(path,"w")
-		f.write(data['contents'])
+		print data["contents"]
+		f.write(data["contents"])
 		f.close()
 		print "Done checkin"
 		return #jsonify(response)
