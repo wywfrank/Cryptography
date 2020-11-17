@@ -28,7 +28,7 @@ class welcome(Resource):
 
 class checkin(Resource):
 
-	
+	print "Checkin"
 	def uploaded_file(filename):
 		return send_from_directory(secure_shared_service.config['UPLOAD_FOLDER'],filename)
 

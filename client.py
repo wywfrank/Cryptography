@@ -12,7 +12,6 @@ server_name = 'secure-shared-store'
 
 ''' <!!! DO NOT MODIFY THIS FUNCTION !!!>'''
 def post_request(server_name, action, body, node_certificate, node_key):
-	action='checkin'#
 	'''
 		node_certificate is the name of the certificate file of the client node (present inside certs).
 		node_key is the name of the private key of the client node (present inside certs).
@@ -23,8 +22,11 @@ def post_request(server_name, action, body, node_certificate, node_key):
 	request_headers = {
 		'Content-Type': "application/json"
 		}
+	
 	fin = open('documents/checkin/document1.txt', 'rb')#
+	print 'fin done'
 	files = {'file': fin}#
+	print 'files done'
 	response = requests.post(
 		url= request_url,
 		data=json.dumps(body),
