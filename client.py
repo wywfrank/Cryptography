@@ -24,15 +24,13 @@ def post_request(server_name, action, body, node_certificate, node_key):
 		}
 	
 	fin = open('documents/checkin/document1.txt', 'rb')#
-	print 'fin done'
 	files = {'file': fin}#
-	print 'files done'
 	response = requests.post(
 		url= request_url,
 		data=json.dumps(body),
 		headers = request_headers,
 		cert = (node_certificate, node_key),
-		files=files,#
+		#files=files,
 	)
 	with open(gt_username, 'w') as f:
 		f.write(response.content)
