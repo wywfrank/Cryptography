@@ -22,14 +22,14 @@ def post_request(server_name, action, body, node_certificate, node_key):
 	request_headers = {
 		'Content-Type': "application/json"
 		}
-	fin = open('documents/checkin/document1.txt', 'rb')#
-	files = {'file': fin}#
+	# fin = open('documents/checkin/document1.txt', 'rb')#
+	# files = {'file': fin}#
 	response = requests.post(
 		url= request_url,
 		data=json.dumps(body),
 		headers = request_headers,
 		cert = (node_certificate, node_key),
-		files=files,#
+		# files=files,#
 	)
 	with open(gt_username, 'w') as f:
 		f.write(response.content)
