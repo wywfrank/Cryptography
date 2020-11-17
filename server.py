@@ -165,7 +165,7 @@ def main():
 	database = r"pythonsqlite.db"
 	sql_create_AUTH_table = '''
 		CREATE TABLE IF NOT EXISTS AUTH 
-		(did integer PRIMARY KEY,
+		(did text,
 		owner text,
 		flag integer NOT NULL);
 	'''
