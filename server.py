@@ -27,22 +27,16 @@ class welcome(Resource):
 		return "Welcome to the secure shared server!"
 
 class checkin(Resource):
-
-	print "Checkin"
-	def uploaded_file(filename):
-		return send_from_directory(secure_shared_service.config['UPLOAD_FOLDER'],filename)
-
 	def post(self):
+		print "Checkin"
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		print data
-		file = data['file']
-		if file:
-			print '**found file', file.filename
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(secure_shared_service.config['UPLOAD_FOLDER'], filename))
-			# for browser, add 'redirect' function on top of 'url_for'
-			return url_for('uploaded_file',filename=filename)
+		file = data['contents']
+		path="documents/"+data['did']+".txt"
+		f = open(path,"w")
+		f.close()
+		print "Done checkin"
 		return #jsonify(response)
         '''
 		Expected response status codes:
