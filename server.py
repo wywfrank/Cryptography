@@ -174,9 +174,8 @@ def main():
 		create_table(conn, sql_create_AUTH_table)
 	else:
 		print("Error! Cannot create the database connection.")
-	with conn:
-		row=(1,'user1',1)
-		insert(conn,row)
+	row=(1,'user1',1)
+	insert(conn,row)
 
 	secure_shared_service.run(debug=True)
 
