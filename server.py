@@ -160,13 +160,10 @@ def main():
 	conn = create_connection(database)
 	if conn is not None:
 		create_table(conn, sql_create_AUTH_table)
-    else:
-        print("Error! Cannot create the database connection.")
-
+	else:
+		print("Error! Cannot create the database connection.")
 	secure_shared_service.run(debug=True)
 
 
 if __name__ == '__main__':
-	
-
 	main()
