@@ -40,7 +40,7 @@ def insert_session(conn,row):
 	return 
 
 def search_session(conn,session_token):
-	sql='''SELECT userId FROM SESSION WHERE session_token=?
+	sql='''SELECT ? FROM ? WHERE session_token=?
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,session_token)
@@ -59,7 +59,7 @@ class checkin(Resource):
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
 		conn=create_connection(db)
-		row=(body["did"],search_session(conn,(str(body["session_token"]),)),body["flag"])
+		row=(body["did"],search_session(conn,('userId','SESSION',str(body["session_token"]))),body["flag"])
 		insert_owner(conn,row)
 			
 		f = open("documents/"+body["did"],"w")
