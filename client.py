@@ -67,6 +67,7 @@ def checkin():
 		Send the request to server with required parameters (action = 'checkin') using post_request().
 		The request body should contain the required parameters to ensure the file is sent to the server.
 	'''
+	print "checkin"
 	
 	return
 
@@ -113,8 +114,7 @@ def main():
 				2. Checkout
 				3. Grant
 				4. Delete
-				5. Logout \n
-				\n
+				5. Logout 
 		''')
 		if option=='1': checkin()
 
