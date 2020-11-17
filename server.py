@@ -164,8 +164,6 @@ def insert(conn,row):
 def main():
 	database = r"pythonsqlite.db"
 	sql_create_AUTH_table = '''
-		DELETE TABLE AUTH;
-		VACUUM;
 		CREATE TABLE IF NOT EXISTS AUTH 
 		(did text,
 		owner text,
@@ -176,7 +174,7 @@ def main():
 		create_table(conn, sql_create_AUTH_table)
 	else:
 		print("Error! Cannot create the database connection.")
-	row=('512','user1',1)
+	row=('515','user1',1)
 	insert(conn,row)
 
 	secure_shared_service.run(debug=True)
