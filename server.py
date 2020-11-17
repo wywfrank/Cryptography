@@ -152,16 +152,33 @@ def create_table(conn, create_table_sql):
         c.execute(create_table_sql)
     except Error as e:
         print e
-	
+
+def insert(conn,insert):
+	sql='''INSERT INTO AUTH(did,owner,flag)
+		VALUES(?,?,?)
+	'''
+	cur=conn.cursor()
+	cur.execute(sql,project)
+	conn.commit()
+	return 
 
 def main():
 	database = r"pythonsqlite.db"
-	sql_create_AUTH_table = "CREATE TABLE IF NOT EXISTS AUTH (did integer PRIMARY KEY,owner text,security_flag integer NOT NULL);"
+	sql_create_AUTH_table = '''
+		CREATE TABLE IF NOT EXISTS AUTH 
+		(did integer PRIMARY KEY,
+		owner text,
+		flag integer NOT NULL);
+	'''
 	conn = create_connection(database)
 	if conn is not None:
 		create_table(conn, sql_create_AUTH_table)
 	else:
 		print("Error! Cannot create the database connection.")
+	with conn:
+		row={'1','user1','1'}
+		insert(conn,row)
+
 	secure_shared_service.run(debug=True)
 
 
