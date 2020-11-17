@@ -24,7 +24,7 @@ db=r"pythonsqlite.db"
 
 
 def insert_owner(conn,row):
-	sql='''INSERT INTO OWNER(did,owner,flag)
+	sql='''INSERT INTO OWNER(did,userId,flag)
 		VALUES(?,?,?)'''
 	cur=conn.cursor()
 	cur.execute(sql,row)
