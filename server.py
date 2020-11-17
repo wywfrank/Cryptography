@@ -231,7 +231,7 @@ def main():
 	sql_create_OWNER_table = '''
 		CREATE TABLE IF NOT EXISTS OWNER 
 		(did text NOT NULL,
-		owner text NOT NULL,
+		userId text NOT NULL,
 		flag integer NOT NULL);
 	'''
 	sql_create_GRANT_table = '''
