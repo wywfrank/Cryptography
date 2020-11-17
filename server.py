@@ -189,6 +189,16 @@ def main():
 		(did text NOT NULL,
 		owner text NOT NULL,
 		flag integer NOT NULL);
+		CREATE TABLE IF NOT EXISTS GRANT 
+		(did text NOT NULL,
+		userId text NOT NULL,
+		accessRight integer NOT NULL,
+		time integer
+		created_date datetime);
+		CREATE TABLE IF NOT EXISTS SESSION 
+		(session_token text NOT NULL,
+		userId text NOT NULL,
+		timer text);
 	'''
 	sql_create_GRANT_table = '''
 		CREATE TABLE IF NOT EXISTS GRANT 
