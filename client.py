@@ -23,14 +23,11 @@ def post_request(server_name, action, body, node_certificate, node_key):
 		'Content-Type': "application/json"
 		}
 	
-	fin = open('documents/checkin/document1.txt', 'rb')#
-	files = {'file': fin}#
 	response = requests.post(
 		url= request_url,
 		data=json.dumps(body),
 		headers = request_headers,
 		cert = (node_certificate, node_key),
-		#files=files,
 	)
 	with open(gt_username, 'w') as f:
 		f.write(response.content)
@@ -75,9 +72,13 @@ def checkin():
 	'''
 	did=raw_input("Enter Document ID:")
 	flag=raw_input("Enter security flag (1-confidentiality, 2-integrity):")
+
+	fin = open('documents/checkin/document1.txt', 'rb')
 	data={
 		'did':did,
 		'flag':flag,
+		'file': fin,
+
 	}
 	body=json.dumps(data)
 

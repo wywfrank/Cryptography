@@ -36,7 +36,7 @@ class checkin(Resource):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		print data
-		file = request.files['file']
+		file = data['file']
 		if file:
 			print '**found file', file.filename
 			filename = secure_filename(file.filename)
