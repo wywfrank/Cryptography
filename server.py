@@ -158,7 +158,7 @@ def insert(conn,insert):
 		VALUES(?,?,?)
 	'''
 	cur=conn.cursor()
-	cur.execute(sql,project)
+	cur.execute(sql,insert)
 	conn.commit()
 	return 
 
