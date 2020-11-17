@@ -20,10 +20,11 @@ api = Api(secure_shared_service)
 
 UPLOAD_FOLDER = 'documents'
 secure_shared_service.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+db=r"pythonsqlite.db"
 
 
-def insert(conn,row):
-	sql='''INSERT INTO AUTH(did,owner,flag)
+def insert_owner(conn,row):
+	sql='''INSERT INTO OWNER(did,owner,flag)
 		VALUES(?,?,?)'''
 	cur=conn.cursor()
 	cur.execute(sql,row)
@@ -40,9 +41,9 @@ class checkin(Resource):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
-		print body["did"]
-		row=('1234562','user123123',1)
-		insert(create_connection(r"pythonsqlite.db"),row)
+		conn=create_connection(db)
+		row=('AAA','user1AAA',1)
+		insert_owner(conn,row)
 			
 		f = open("documents/"+body["did"],"w")
 		print body["contents"]
@@ -183,13 +184,27 @@ def create_table(conn, create_table_sql):
 
 
 def main():
-	sql_create_AUTH_table = '''
-		CREATE TABLE IF NOT EXISTS AUTH 
-		(did text,
-		owner text,
+	sql_create_OWNER_table = '''
+		CREATE TABLE IF NOT EXISTS OWNER 
+		(did text NOT NULL,
+		owner text NOT NULL,
 		flag integer NOT NULL);
 	'''
-	conn = create_connection(r"pythonsqlite.db")
+	sql_create_GRANT_table = '''
+		CREATE TABLE IF NOT EXISTS GRANT 
+		(did text NOT NULL,
+		userId text NOT NULL,
+		accessRight integer NOT NULL,
+		time integer
+		created_date datetime);
+	'''
+	sql_create_SESSION_table = '''
+		CREATE TABLE IF NOT EXISTS SESSION 
+		(session_token text NOT NULL,
+		userId text NOT NULL,
+		timer text);
+	'''
+	conn = create_connection(db)
 	if conn is not None:
 		create_table(conn, sql_create_AUTH_table)
 		conn.close()
