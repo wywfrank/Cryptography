@@ -27,6 +27,14 @@ class welcome(Resource):
 		return "Welcome to the secure shared server!"
 
 class checkin(Resource):
+	def insert(conn,row):
+		sql='''INSERT INTO AUTH(did,owner,flag)
+			VALUES(?,?,?)'''
+		cur=conn.cursor()
+		cur.execute(sql,row)
+		conn.commit()
+		return 
+
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
@@ -34,7 +42,8 @@ class checkin(Resource):
 		print body["did"]
 
 		row=('1234562','user123123',1)
-		insert(conn,row)
+		insert(create_connection(r"pythonsqlite.db"),row)
+			
 		f = open("documents/"+body["did"],"w")
 		print body["contents"]
 		f.write(body["contents"])
@@ -172,25 +181,18 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print e
 
-def insert(conn,row):
-	sql='''INSERT INTO AUTH(did,owner,flag)
-		VALUES(?,?,?)'''
-	cur=conn.cursor()
-	cur.execute(sql,row)
-	conn.commit()
-	return 
 
 def main():
-	database = r"pythonsqlite.db"
 	sql_create_AUTH_table = '''
 		CREATE TABLE IF NOT EXISTS AUTH 
 		(did text,
 		owner text,
 		flag integer NOT NULL);
 	'''
-	conn = create_connection(database)
+	conn = create_connection(r"pythonsqlite.db")
 	if conn is not None:
 		create_table(conn, sql_create_AUTH_table)
+		conn.close()
 	else:
 		print("Error! Cannot create the database connection.")
 
