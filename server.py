@@ -103,7 +103,7 @@ class login(Resource):
 			session_token = uuid4() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
 			conn=create_connection(db)
-			insert_session(conn,(session_token,str(body["userId"])))
+			insert_session(conn,(str(session_token),str(body["userId"])))
 			response = {
 				'status': 200,
 				'message': 'Login Successful',
