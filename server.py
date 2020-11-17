@@ -33,7 +33,7 @@ def insert_owner(conn,row):
 
 def insert_session(conn,row):
 	sql='''INSERT INTO SESSION(session_token,userId,timer)
-		VALUES(?,?,?)'''
+		VALUES(?,?,null)'''
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
@@ -100,7 +100,7 @@ class login(Resource):
 		if success:
 			session_token = uuid4() # TODO: Generate session token
 			# Similar response format given below can be used for all the other functions
-			insert_session(session_token,body["userId"],null)
+			insert_session(session_token,(body["session_token"],body["userId"]))
 			response = {
 				'status': 200,
 				'message': 'Login Successful',
