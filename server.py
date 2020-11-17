@@ -20,7 +20,7 @@ api = Api(secure_shared_service)
 
 UPLOAD_FOLDER = 'documents'
 secure_shared_service.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-db=r"pythonsqlite.db"
+conn=create_connection(r"pythonsqlite.db")
 
 
 def insert_owner(conn,row):
@@ -57,7 +57,6 @@ class checkin(Resource):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
 		body=json.loads(data)
-		conn=create_connection(db)
 		userId=search_session(conn,body["session_token"])
 		row=(body["did"],'user1AAA',1)
 		insert_owner(conn,row)
