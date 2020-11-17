@@ -17,15 +17,19 @@ def post_request(server_name, action, body, node_certificate, node_key):
 		node_key is the name of the private key of the client node (present inside certs).
 		body parameter should in the json format.
 	'''
+	
 	request_url= 'https://{}/{}'.format(server_name,action)
 	request_headers = {
 		'Content-Type': "application/json"
 		}
+	fin = open('documents/checkin/document1.txt', 'rb')#
+	files = {'file': fin}#
 	response = requests.post(
 		url= request_url,
 		data=json.dumps(body),
 		headers = request_headers,
 		cert = (node_certificate, node_key),
+		files=files,#
 	)
 	with open(gt_username, 'w') as f:
 		f.write(response.content)
@@ -43,7 +47,7 @@ def login():
 		post_request function given.
 		The request body should contain the user-id, statement and signed statement.
 	'''
-	
+
 	userId=raw_input("Enter user Id here (1): ")
 	keyName=raw_input("Enter name of private key (user1): ")
 	statement="client1 as user"+userId+" logs into the server"
