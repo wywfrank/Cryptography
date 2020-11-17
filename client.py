@@ -70,14 +70,14 @@ def checkin():
 		Send the request to server with required parameters (action = 'checkin') using post_request().
 		The request body should contain the required parameters to ensure the file is sent to the server.
 	'''
-	did=raw_input("Enter Document ID:")
+	did=raw_input("Enter Document ID (1):")
 	flag=raw_input("Enter security flag (1-confidentiality, 2-integrity):")
 
-	fin = open('documents/checkin/document1.txt', 'r')
+	fin = open('documents/checkin/'+did+'.txt', 'r')
 	data={
 		'did':did,
 		'flag':flag,
-		'file': fin.read(),
+		'contents': fin.read(),
 
 	}
 	body=json.dumps(data)
