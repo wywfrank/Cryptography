@@ -73,11 +73,11 @@ def checkin():
 	did=raw_input("Enter Document ID:")
 	flag=raw_input("Enter security flag (1-confidentiality, 2-integrity):")
 
-	fin = open('documents/checkin/document1.txt', 'rb')
+	fin = open('documents/checkin/document1.txt', 'r')
 	data={
 		'did':did,
 		'flag':flag,
-		'file': fin,
+		'file': fin.read(),
 
 	}
 	body=json.dumps(data)
