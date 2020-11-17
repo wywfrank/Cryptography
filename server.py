@@ -156,9 +156,7 @@ def create_table(conn, create_table_sql):
 
 def main():
 	database = r"pythonsqlite.db"
-
-    sql_create_AUTH_table = """ CREATE TABLE IF NOT EXISTS AUTH (did integer PRIMARY KEY,owner text,security_flag integer NOT NULL); """
-
+	sql_create_AUTH_table = "CREATE TABLE IF NOT EXISTS AUTH (did integer PRIMARY KEY,owner text,security_flag integer NOT NULL);"
 	conn = create_connection(database)
 	if conn is not None:
         create_table(conn, sql_create_AUTH_table)
