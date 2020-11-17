@@ -159,8 +159,7 @@ def main():
 	sql_create_AUTH_table = "CREATE TABLE IF NOT EXISTS AUTH (did integer PRIMARY KEY,owner text,security_flag integer NOT NULL);"
 	conn = create_connection(database)
 	if conn is not None:
-        create_table(conn, sql_create_AUTH_table)
-	
+		create_table(conn, sql_create_AUTH_table)
     else:
         print("Error! Cannot create the database connection.")
 
