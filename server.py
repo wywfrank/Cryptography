@@ -75,7 +75,7 @@ class checkin(Resource):
 		did=search_owner(conn,(userId,body["did"]))
 
 		if did is None:
-			row=(body["did"],(userId,),body["flag"])
+			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
 				
 			f = open("documents/"+body["did"],"w")
