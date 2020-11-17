@@ -38,7 +38,6 @@ def insert_session(conn,row):
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
-	conn.close()
 	return 
 
 def search_session(conn,session_token):
@@ -48,7 +47,6 @@ def search_session(conn,session_token):
 	c=cur.execute(sql,session_token)
 	print c
 	conn.commit()
-	conn.close()
 	print c
 	return c
 
