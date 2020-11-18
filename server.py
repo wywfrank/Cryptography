@@ -5,7 +5,6 @@ from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
-from Crypto.Random import *
 import hashlib
 import json
 import base64
@@ -15,7 +14,7 @@ import sqlite3
 import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
-
+import random
 
 
 secure_shared_service = Flask(__name__)
