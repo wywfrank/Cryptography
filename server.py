@@ -79,7 +79,7 @@ class checkin(Resource):
 		did=search_owner(conn,(userId,body["did"]))
 
 		if did is None:
-			if body["flag"]==1:
+			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
 				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
