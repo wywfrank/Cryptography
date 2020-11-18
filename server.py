@@ -94,7 +94,7 @@ class checkin(Resource):
 				padded=body["contents"]+padding
 				encrypted= encryptor.encrypt(padded.encode())
 				print encrypted
-				encrypted_decoded=b64decode(encrypted)
+				encrypted_decoded=base64.b64decode(encrypted)
 				# iv=encrypted_decoded[:AES.block_size]
 				# decryptor=AES.new(key,AES.MODE_CBC, iv)
 				# content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
