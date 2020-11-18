@@ -85,7 +85,7 @@ class checkin(Resource):
 				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
 				aes = AES.new(key, AES.MODE_CBC, iv)
-				modulo=(len(body["contents"])+len(len(body["contents"])))%16
+				modulo=(len(body["contents"])+len(str(len(body["contents"]))))%16
 				for i in range(modulo-len(len(body["contents"]))):
 					padding+='#'
 				data=body["contents"]+padding+len(body["contents"])
