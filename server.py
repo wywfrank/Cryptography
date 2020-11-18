@@ -24,8 +24,8 @@ db=r"pythonsqlite.db"
 
 
 def insert_owner(conn,row):
-	sql='''INSERT INTO OWNER(did,userId,flag)
-		VALUES(?,?,?)'''
+	sql='''INSERT INTO OWNER(did,userId,flag,encrypted_key)
+		VALUES(?,?,?,?)'''
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
@@ -42,15 +42,12 @@ def search_owner(conn,param):
 	return result
 
 def insert_session(conn,row):
-
-
 	sql='''DELETE FROM SESSION
 		WHERE userId = ?'''
 	cur=conn.cursor()
 	cur.execute(sql,(row[1],))
 	sql='''INSERT INTO SESSION(session_token,userId)
 		VALUES(?,?)'''
-	# cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
 	return 
@@ -63,7 +60,6 @@ def search_session(conn,session_token):
 	cur.execute(sql,session_token)
 	userId=cur.fetchone()[0]
 	conn.commit()
-	print userId
 	return userId
 
 
@@ -83,7 +79,21 @@ class checkin(Resource):
 		did=search_owner(conn,(userId,body["did"]))
 
 		if did is None:
-			row=(body["did"],userId,body["flag"])
+			if body["flag"]==1:
+				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
+				print 'key', [x for x in key]
+				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
+				aes = AES.new(key, AES.MODE_CBC, iv)
+				modulo=(len(body["contents"])+len(len(body["contents"])))%16
+				for i in range(modulo-len(len(body["contents"]))):
+					padding+='#'
+				data=body["contents"]+padding+len(body["contents"])
+				print data
+				encd = aes.encrypt(data)
+				print "encd "+encd
+				decd=adec.decrypt(encd)
+				print "decd "+decd
+			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
 				
 			f = open("documents/"+body["did"],"w")
@@ -102,7 +112,7 @@ class checkin(Resource):
 				'message': 'Access Denied to check in',
 				'session_token': session_token,
 			}
-		
+		#need to add logic to allow authorized users to update document
 		return jsonify(response)
         '''
 		Expected response status codes:
@@ -240,14 +250,15 @@ def main():
 		CREATE TABLE IF NOT EXISTS OWNER 
 		(did text NOT NULL,
 		userId text NOT NULL,
-		flag integer NOT NULL);
+		flag integer NOT NULL,
+		encrypted_key text);
 	'''
 	sql_create_GRANT_table = '''
 		CREATE TABLE IF NOT EXISTS GRANT 
 		(did text NOT NULL,
 		userId text NOT NULL,
 		accessRight integer NOT NULL,
-		time integer
+		time integer,
 		created_date datetime);
 	'''
 	sql_create_SESSION_table = '''
