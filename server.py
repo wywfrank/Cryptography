@@ -8,10 +8,9 @@ from Crypto.Cipher import AES
 import hashlib
 import json
 import base64
-# from base64 import b64encode, b64decode
 from uuid import uuid4
 import sqlite3
-# from sqlite3 import Error
+from sqlite3 import Error
 import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
@@ -95,10 +94,10 @@ class checkin(Resource):
 				encrypted= encryptor.encrypt(padded.encode())
 				print encrypted
 				encrypted_decoded=base64.b64decode(encrypted+'===')
-				# iv=encrypted_decoded[:AES.block_size]
+				iv=encrypted_decoded[:AES.block_size]
 				# decryptor=AES.new(key,AES.MODE_CBC, iv)
 				# content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
-				print "content"+content
+				# print "content"+content
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
 				
