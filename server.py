@@ -84,15 +84,15 @@ class checkin(Resource):
 				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
 				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
-				aes = AES.new(key, AES.MODE_CBC, iv)
+				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				modulo=(len(body["contents"])+len(str(len(body["contents"]))))%16
 				padding=''
 				for i in range(modulo-len(str(len(body["contents"])))):
 					padding+='#'
 				data=body["contents"]+padding+str(len(body["contents"]))
 				print data
-				# encd= aes.encrypt(data)
-				# decd= adec.decrypt(encd)
+				encd= encryptor.encrypt(data.encode("utf8"))
+				decd= adec.decrypt(encd)
 				# print str(decd)
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
