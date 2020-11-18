@@ -31,14 +31,6 @@ def insert_owner(conn,row):
 	conn.commit()
 	return 
 
-def insert_session(conn,row):
-	sql='''INSERT INTO SESSION(session_token,userId)
-		VALUES(?,?)'''
-	cur=conn.cursor()
-	cur.execute(sql,row)
-	conn.commit()
-	return 
-
 def search_owner(conn,param):
 	sql='''SELECT did FROM OWNER WHERE userId!=? AND did=?
 		'''
@@ -48,6 +40,21 @@ def search_owner(conn,param):
 	conn.commit()
 	print result
 	return result
+
+def insert_session(conn,row):
+
+
+	sql='''DELETE FROM SESSION
+		WHERE userId = ?'''
+	cur=conn.cursor()
+	cur.execute(sql,(row[1],))
+	sql='''INSERT INTO SESSION(session_token,userId)
+		VALUES(?,?)'''
+	# cur=conn.cursor()
+	cur.execute(sql,row)
+	conn.commit()
+	return 
+
 
 def search_session(conn,session_token):
 	sql='''SELECT userId FROM SESSION WHERE session_token=?
@@ -92,7 +99,7 @@ class checkin(Resource):
 		else:
 			response= {
 				'status': 702,
-				'message': 'Access Denied',
+				'message': 'Access Denied to check in',
 				'session_token': session_token,
 			}
 		
