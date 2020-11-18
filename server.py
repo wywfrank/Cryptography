@@ -8,7 +8,7 @@ from Crypto.Cipher import AES
 import hashlib
 import json
 import base64
-from base64 import b64encode, b64decode
+# from base64 import b64encode, b64decode
 from uuid import uuid4
 import sqlite3
 # from sqlite3 import Error
@@ -95,10 +95,10 @@ class checkin(Resource):
 				encrypted= encryptor.encrypt(padded.encode())
 				print encrypted
 				encrypted_decoded=base64.b64decode(encrypted+'===')
-				# iv=encrypted_decoded[:AES.block_size]
-				# decryptor=AES.new(key,AES.MODE_CBC, iv)
-				# content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
-				# print "content"+content
+				iv=encrypted_decoded[:AES.block_size]
+				decryptor=AES.new(key,AES.MODE_CBC, iv)
+				content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+				print "content"+content
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
 				
