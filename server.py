@@ -5,15 +5,15 @@ from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
+from Crypto.Cipher import random
 import json
 import base64
 from uuid import uuid4
 import sqlite3
-from sqlite3 import Error
+# from sqlite3 import Error
 import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
-import random
 
 
 secure_shared_service = Flask(__name__)
@@ -22,6 +22,7 @@ api = Api(secure_shared_service)
 UPLOAD_FOLDER = 'documents'
 secure_shared_service.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db=r"pythonsqlite.db"
+
 
 
 def insert_owner(conn,row):
@@ -85,13 +86,10 @@ class checkin(Resource):
 				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
-				modulo=(len(body["contents"])+len(str(len(body["contents"]))))%16
-				padding=''
-				for i in range(modulo-len(str(len(body["contents"])))):
-					padding+='#'
-				data=body["contents"]+padding+str(len(body["contents"]))
-				print data
-				encd= encryptor.encrypt(data.encode("utf8"))
+				data=body["contents"].encode('utf-8')
+				l=len(data)
+				
+				encd= encryptor.encrypt(data)
 				decd= adec.decrypt(encd)
 				# print str(decd)
 			row=(body["did"],userId,body["flag"],"testing_key")
@@ -220,6 +218,37 @@ api.add_resource(checkout, '/checkout')
 api.add_resource(grant, '/grant')
 api.add_resource(delete, '/delete')
 api.add_resource(logout, '/logout')
+
+class AESCipher(object):
+    def __init__(self, key):
+        self.block_size = AES.block_size
+        self.key = hashlib.sha256(key.encode()).digest()
+
+    def encrypt(self, plain_text):
+        plain_text = self.__pad(plain_text)
+        iv = Random.new().read(self.block_size)
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        encrypted_text = cipher.encrypt(plain_text.encode())
+        return b64encode(iv + encrypted_text).decode("utf-8")
+
+    def decrypt(self, encrypted_text):
+        encrypted_text = b64decode(text)
+        iv = encrypted_text[:self.block_size]
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        plain_text = cipher.decrypt(encrypted_text[self.block_size:]).decode("utf-8")
+        return self.__unpad(plain_text)
+
+    def __pad(self, plain_text):
+        number_of_bytes_to_pad = self.block_size - len(plain_text) % self.block_size
+        ascii_string = chr(number_of_bytes_to_pad)
+        padding_str = number_of_bytes_to_pad * ascii_string
+        padded_plain_text = plain_text + padding_str
+        return padded_plain_text
+
+    @staticmethod
+    def __unpad(plain_text):
+        last_character = plain_text[len(plain_text) - 1:]
+        return plain_text[:-ord(last_character)]
 
 def create_connection(db_file):
 	conn = None
