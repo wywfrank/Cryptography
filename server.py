@@ -94,13 +94,15 @@ class checkin(Resource):
 				
 				encrypted= encryptor.encrypt(padded.encode())
 				print encrypted
-				# decd= adec.decrypt(encd)
-				# print str(decd)
+				encrypted_decoded=b64decode(encrypted)
+				iv=encrypted_decoded[:AES.block_size]
+				decryptor=AES.new(key,AES.MODE_CBC, iv)
+				content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+				print "content"+content
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
 				
 			f = open("documents/"+body["did"],"w")
-			print body["contents"]
 			f.write(body["contents"])
 			f.close()
 			print "Done checkin"
