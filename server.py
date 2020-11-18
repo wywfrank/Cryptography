@@ -5,7 +5,7 @@ from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
-from Crypto.Cipher import Random
+from Crypto import Random
 import json
 import base64
 from uuid import uuid4
