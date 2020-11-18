@@ -92,9 +92,8 @@ class checkin(Resource):
 				data=body["contents"]+padding+str(len(body["contents"]))
 				print data
 				encd = aes.encrypt(data)
-				print "encd "+encd
 				decd=adec.decrypt(encd)
-				print "decd "+decd
+				print decd
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
 				
