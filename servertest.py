@@ -6,7 +6,6 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from Crypto import Random
-import hashlib
 import json
 import base64
 from uuid import uuid4
@@ -87,14 +86,11 @@ class checkin(Resource):
 				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
-				num_bytes_to_pad = AES.block_size - len(body["contents"]) % AES.block_size
-				ascii_string=chr(num_bytes_to_pad)
-				padding=num_bytes_to_pad*ascii_string
-				padded=body["contents"]+padding
+				data=body["contents"].encode('utf-8')
+				l=len(data)
 				
-				encrypted= encryptor.encrypt(padded.encode())
-				print encrypted
-				# decd= adec.decrypt(encd)
+				encd= encryptor.encrypt(data)
+				decd= adec.decrypt(encd)
 				# print str(decd)
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
@@ -222,6 +218,37 @@ api.add_resource(checkout, '/checkout')
 api.add_resource(grant, '/grant')
 api.add_resource(delete, '/delete')
 api.add_resource(logout, '/logout')
+
+class AESCipher(object):
+    def __init__(self, key):
+        self.block_size = AES.block_size
+        self.key = hashlib.sha256(key.encode()).digest()
+
+    def encrypt(self, plain_text):
+        plain_text = self.__pad(plain_text)
+        iv = Random.new().read(self.block_size)
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        encrypted_text = cipher.encrypt(plain_text.encode())
+        return b64encode(iv + encrypted_text).decode("utf-8")
+
+    def decrypt(self, encrypted_text):
+        encrypted_text = b64decode(text)
+        iv = encrypted_text[:self.block_size]
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        plain_text = cipher.decrypt(encrypted_text[self.block_size:]).decode("utf-8")
+        return self.__unpad(plain_text)
+
+    def __pad(self, plain_text):
+        number_of_bytes_to_pad = self.block_size - len(plain_text) % self.block_size
+        ascii_string = chr(number_of_bytes_to_pad)
+        padding_str = number_of_bytes_to_pad * ascii_string
+        padded_plain_text = plain_text + padding_str
+        return padded_plain_text
+
+    @staticmethod
+    def __unpad(plain_text):
+        last_character = plain_text[len(plain_text) - 1:]
+        return plain_text[:-ord(last_character)]
 
 def create_connection(db_file):
 	conn = None
