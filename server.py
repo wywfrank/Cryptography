@@ -8,6 +8,7 @@ from Crypto.Cipher import AES
 import hashlib
 import json
 import base64
+from base64 import b64encode, b64decode
 from uuid import uuid4
 import sqlite3
 # from sqlite3 import Error
