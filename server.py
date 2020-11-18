@@ -89,7 +89,7 @@ class checkin(Resource):
 				padding=''
 				for i in range(modulo-len(str(len(body["contents"])))):
 					padding+='#'
-				data=body["contents"]+padding+len(body["contents"])
+				data=body["contents"]+padding+str(len(body["contents"]))
 				print data
 				encd = aes.encrypt(data)
 				print "encd "+encd
