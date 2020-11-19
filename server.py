@@ -99,7 +99,7 @@ class checkin(Resource):
 				
 				keyPub=RSA.importKey(pubkey)
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				encrypted_key = cipher.encrypt(key)
+				encrypted_key = str(cipher.encrypt(key))
 				print "encrypted_key->"+ encrypted_key
 
 				encrypted_decoded=base64.b64decode(encrypted_contents)
@@ -108,8 +108,8 @@ class checkin(Resource):
 				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
 				
 				last_character = plain_text[len(plain_text) - 1:]
-				output= plain_text[:-ord(last_character)]
-				print "output"+output
+				original_contents= plain_text[:-ord(last_character)]
+				print "original_contents: \n"+original_contents
 
 				# print "content"+content
 			row=(body["did"],userId,body["flag"],encrypted_key)
