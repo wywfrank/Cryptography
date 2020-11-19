@@ -80,7 +80,7 @@ def search_session(conn,session_token):
 	if cur.fetchone() is not None:
 		result=cur.fetchone()[0]
 	conn.commit()
-	return userId
+	return result
 
 
 class welcome(Resource):
