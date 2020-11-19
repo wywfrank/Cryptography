@@ -118,7 +118,7 @@ class checkin(Resource):
 		contents=str(body["contents"])#str added after flag==1 test
 		print contents
 		encrypted_key = ''
-		if ownerId ==body["userId"] and ():
+		if ownerId ==body["userId"]:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
