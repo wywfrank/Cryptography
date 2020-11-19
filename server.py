@@ -43,7 +43,7 @@ def search_owner(conn,param):
 	cur.execute(sql,param)
 	result=cur.fetchone()
 	conn.commit()
-	print 'Owner user ID: '+result
+	print result
 	return result[0]
 
 def insert_session(conn,row):
