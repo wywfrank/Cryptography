@@ -18,7 +18,6 @@ import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 import random
-from Crypto.Cipher import PKCS1_v1_5 as Cipher_PKCS1_v1_5
 
 
 secure_shared_service = Flask(__name__)
@@ -97,12 +96,12 @@ class checkin(Resource):
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				encrypted_contents=base64.b64encode(iv+encrypted).decode("utf-8")
 
-				# with open('../certs/secure-shared-store.pub', 'r') as fpub:
-				# 	pubkey=fpub.read()
+				
 				keyPub=RSA.importKey(open('../certs/secure-shared-store.pub').read())
-
-				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				encrypted_key = (cipher.encrypt(key))
+				h = (SHA.new(key))
+				cipher=PKCS1_v1_5.new(keyPub)
+				encrypted_key=cipher.encrypt(key+h.digest())
+				
 				print "encrypted_key->"+ encrypted_key
 				f = open("documents/key-"+body["did"].split('.')[0],"w")
 				f.write(encrypted_key)
