@@ -115,12 +115,12 @@ class checkin(Resource):
 				sentinel=Random.new().read(15+dsize)
 
 				cipher = PKCS1_v1_5.new(keyPri)
-				key = cipher.decrypt(encrypted_key, sentinel)
+				test = cipher.decrypt(encrypted_key, sentinel)
 
 
 
 
-				print "key"+key
+				print "key"+test
 
 				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
 				# key = (cipher.decrypt(encrypted_key))
