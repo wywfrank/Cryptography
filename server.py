@@ -100,7 +100,7 @@ class checkin(Resource):
 			print response
 			return jsonify(response)
 		print body["flag"]
-		if (str(body["flag"])!="1" or str(body["flag"])!="2") :
+		if ((body["flag"]) not in [1,2]) :
 			response= {
 				'status': 700,
 				'message': 'Bad Flag number',
