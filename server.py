@@ -106,8 +106,14 @@ class checkin(Resource):
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				h = SHA256.new(contents)
 				signature = pkcs1_15.new(keyPri).sign(h)
-				print "signature"
-				print signature
+
+				keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
+				h = SHA256.new(contents)
+				try:
+					pkcs1_15.new(keyPub).verify(h, signature)
+					print "The signature is valid."
+				except (ValueError, TypeError):
+					print "The signature is not valid."
 
 
 			row=(body["did"],userId,body["flag"])
