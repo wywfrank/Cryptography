@@ -97,10 +97,9 @@ class checkin(Resource):
 				with open('../certs/secure-shared-store.pub', 'r') as fpub:
 					pubkey=fpub.read()
 				
-				print key.decode("utf-8")
 				keyPub=RSA.importKey(pubkey)
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				encrypted_key = cipher.encrypt(key.decode("utf-8"))
+				encrypted_key = cipher.encrypt(key)
 				# print("encrypted_key->", encrypted_key)
 
 				encrypted_decoded=base64.b64decode(contents)
