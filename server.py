@@ -93,11 +93,11 @@ class checkin(Resource):
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				contents=base64.b64encode(iv+encrypted).decode("utf-8")
 
-				cur_path = os.path.dirname(__file__)
-				print cur_path
-				new_path = os.path.relpath('../certs/secure-shared-store.pub', cur_path)
-				print new_path
-				f= open(new_path, 'r')
+				# cur_path = os.path.dirname(__file__)
+				# print cur_path
+				# new_path = os.path.relpath('../certs/secure-shared-store.pub', cur_path)
+				# print new_path
+				f= open('../certs/secure-shared-store.pub', 'r')
 				print "public key "
 				print f.readlines()
 
