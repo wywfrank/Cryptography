@@ -42,7 +42,7 @@ def search_did(conn,param):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
-	result=str(cur.fetchone()[0])
+	result=cur.fetchone()[0]
 	conn.commit()
 	return result
 
@@ -51,7 +51,7 @@ def search_owner(conn,param):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
-	result=str(cur.fetchone()[0])
+	result=cur.fetchone()[0]
 	conn.commit()
 	return result
 
