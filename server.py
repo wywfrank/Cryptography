@@ -96,23 +96,27 @@ class checkin(Resource):
 
 				with open('../certs/secure-shared-store.pub', 'r') as fpub:
 					pubkey=fpub.read()
-				
 				keyPub=RSA.importKey(pubkey)
-				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				encrypted_key = (cipher.encrypt(key))
-				print "encrypted_key->"+ encrypted_key
-				f = open("documents/key-"+body["did"].split('.')[0],"w")
-				f.write(encrypted_key)
-				f.close()
+
+				encrypted_key = keyPub.encrypt(key,'x')[0]
+
+				# cipher = Cipher_PKCS1_v1_5.new(keyPub)
+				# encrypted_key = (cipher.encrypt(key))
+				# print "encrypted_key->"+ encrypted_key
+				# f = open("documents/key-"+body["did"].split('.')[0],"w")
+				# f.write(encrypted_key)
+				# f.close()
 
 				with open('../certs/secure-shared-store.key', 'r') as fpri:
 					prikey=fpri.read()
-				
 				keyPri=RSA.importKey(prikey)
-				cipher = Cipher_PKCS1_v1_5.new(keyPri)
 
-				key = (cipher.decrypt(encrypted_key))
-				print 'key', [x for x in key]
+				testoutput=keyPri.decrypt(encrypted_key)
+				print testoutput
+
+				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
+				# key = (cipher.decrypt(encrypted_key))
+				# print 'key', [x for x in key]
 
 				encrypted_decoded=base64.b64decode(encrypted_contents)
 				iv=encrypted_decoded[:AES.block_size]
