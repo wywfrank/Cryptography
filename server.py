@@ -108,7 +108,7 @@ class checkin(Resource):
 
 				with open('../certs/secure-shared-store.key', 'r') as fpri:
 					prikey=fpri.read()
-				keyPri=RSA.importKey(open('../certs/secure-shared-store.key'),read())
+				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 
 				dsize=SHA.digest_size
 				sentinel=random.new().read(15+dsize)
