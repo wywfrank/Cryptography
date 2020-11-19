@@ -78,7 +78,7 @@ def search_session(conn,session_token):
 	cur.execute(sql,session_token)
 	result = None
 	if cur.fetchone() is not None:
-		result=cur.fetchone()[0]
+		result=cur.fetchone()
 	conn.commit()
 	return result
 
