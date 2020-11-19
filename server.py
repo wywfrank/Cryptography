@@ -92,7 +92,7 @@ class checkin(Resource):
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				contents=base64.b64encode(iv+encrypted).decode("utf-8")
-				key=key.decode("utf-8") 
+				key=key.encode("utf-8") 
 				print "key "+key
 				
 
