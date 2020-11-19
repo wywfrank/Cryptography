@@ -80,20 +80,21 @@ class checkin(Resource):
 		userId=search_session(conn,(session_token,))
 		print "userId "+userId
 		did=search_owner(conn,(userId,body["did"]))
-
+		contents=body["contents"]
+		key = ''
 		if did is None:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
 				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
-				num_bytes_to_pad = AES.block_size - len(body["contents"]) % AES.block_size
-				ascii_string=chr(num_bytes_to_pad)
-				padding=num_bytes_to_pad*ascii_string
-				padded=body["contents"]+padding
+				num_bytes_to_pad = AES.block_size - len(contents) % AES.block_size
+				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
-				stored_encrypted=base64.b64encode(iv+encrypted).decode("utf-8")
-				print stored_encrypted
+				contents=base64.b64encode(iv+encrypted).decode("utf-8")
+				print contents
+				
+
 				encrypted_decoded=base64.b64decode(stored_encrypted)
 				iv=encrypted_decoded[:AES.block_size]
 				decryptor=AES.new(key,AES.MODE_CBC, iv)
@@ -104,9 +105,9 @@ class checkin(Resource):
 				print "output"+output
 
 				# print "content"+content
-			row=(body["did"],userId,body["flag"],"testing_key")
+			row=(body["did"],userId,body["flag"],key)
 			insert_owner(conn,row)
-				
+			
 			f = open("documents/"+body["did"],"w")
 			f.write(body["contents"])
 			f.close()
