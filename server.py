@@ -93,8 +93,8 @@ class checkin(Resource):
 		print "userId "+userId
 		if userId is None:
 			response= {
-				'status': 702,
-				'message': 'Access Denied to check in',
+				'status': 700,
+				'message': 'Unable to find session Id',
 				'session_token': session_token,
 			}
 			print response
@@ -118,7 +118,7 @@ class checkin(Resource):
 		contents=str(body["contents"])#str added after flag==1 test
 		print contents
 		encrypted_key = ''
-		if ownerId ==body["userId"]:
+		if ownerId == userId:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
