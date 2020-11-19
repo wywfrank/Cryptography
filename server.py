@@ -92,9 +92,13 @@ class checkin(Resource):
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				contents=base64.b64encode(iv+encrypted).decode("utf-8")
-				key=str(key)
-				print "key "+key
-				
+
+				cur_path = os.path.dirname(__file__)
+
+				new_path = os.path.relpath('..\\certs\\secure-shared-store.pub', cur_path)
+				f= open(new_path, 'r')
+				print "public key "
+				print f.readlines()
 
 				encrypted_decoded=base64.b64decode(contents)
 				iv=encrypted_decoded[:AES.block_size]
