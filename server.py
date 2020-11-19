@@ -100,7 +100,7 @@ class checkin(Resource):
 			print response
 			return jsonify(response)
 
-		if body["flag"]!='1' or body["flag"]!='2' :
+		if (body["flag"]!='1' or body["flag"]!='2') :
 			response= {
 				'status': 700,
 				'message': 'Bad Flag number',
