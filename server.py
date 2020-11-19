@@ -3,6 +3,7 @@ from flask_restful import Resource, Api
 # TODO: import additional modules as required
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
+from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from Crypto import Random
