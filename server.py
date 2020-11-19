@@ -95,7 +95,7 @@ class checkin(Resource):
 
 				cur_path = os.path.dirname(__file__)
 				print cur_path
-				new_path = os.path.relpath('..\\certs\\secure-shared-store.pub', cur_path)
+				new_path = os.path.relpath('../certs/secure-shared-store.pub', cur_path)
 				print new_path
 				f= open(new_path, 'r')
 				print "public key "
