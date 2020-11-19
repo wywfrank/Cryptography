@@ -92,7 +92,7 @@ class checkin(Resource):
 				num_bytes_to_pad = AES.block_size - len(contents) % AES.block_size
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
-				contents=base64.b64encode(iv+encrypted).decode("utf-8")
+				encrypted_contents=base64.b64encode(iv+encrypted).decode("utf-8")
 
 				with open('../certs/secure-shared-store.pub', 'r') as fpub:
 					pubkey=fpub.read()
@@ -100,9 +100,9 @@ class checkin(Resource):
 				keyPub=RSA.importKey(pubkey)
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
 				encrypted_key = cipher.encrypt(key)
-				# print("encrypted_key->", encrypted_key)
+				print "encrypted_key->"+ encrypted_key
 
-				encrypted_decoded=base64.b64decode(contents)
+				encrypted_decoded=base64.b64decode(encrypted_contents)
 				iv=encrypted_decoded[:AES.block_size]
 				decryptor=AES.new(key,AES.MODE_CBC, iv)
 				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
