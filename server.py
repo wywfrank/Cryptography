@@ -3,7 +3,6 @@ from flask_restful import Resource, Api
 # TODO: import additional modules as required
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
-import Crypto.Hash.MD5 as MD5
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from Crypto.Cipher import PKCS1_OAEP
@@ -83,7 +82,7 @@ class checkin(Resource):
 		userId=search_session(conn,(session_token,))
 		print "userId "+userId
 		did=search_owner(conn,(userId,body["did"]))
-		contents=str(body["contents"])
+		contents=str(body["contents"])#str added after flag==1 test
 		encrypted_key = ''
 		if did is None and (body["flag"]=='1' or body["flag"]=='2'):
 			if body["flag"]=='1':
@@ -102,10 +101,11 @@ class checkin(Resource):
 				f = open("documents/key-"+body["did"].split('.')[0],"w")
 				f.write(encrypted_key)
 				f.close()
+
 			if body["flag"]=='2':
-				hash=MD5.new(contents).digest()
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-				signature=keyPri.sign(hash,'')
+				h = SHA256.new(contents)
+				signature = pkcs1_15.new(keyPri).sign(h)
 				print "signature"
 				print signature
 
