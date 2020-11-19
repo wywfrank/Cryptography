@@ -37,14 +37,14 @@ def insert_owner(conn,row):
 	return 
 
 def search_owner(conn,param):
-	sql='''SELECT did FROM OWNER WHERE userId!=? AND did=?
+	sql='''SELECT userId FROM OWNER WHERE did=?
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
 	result=cur.fetchone()
 	conn.commit()
-	print result
-	return result
+	print 'Owner user ID: '+result
+	return result[0]
 
 def insert_session(conn,row):
 	sql='''DELETE FROM SESSION
@@ -81,7 +81,7 @@ class checkin(Resource):
 		session_token=str(body["session_token"])
 		userId=search_session(conn,(session_token,))
 		print "userId "+userId
-		did=search_owner(conn,(userId,body["did"]))
+		did=search_owner(conn,(body["did"],))
 		contents=str(body["contents"])#str added after flag==1 test
 		encrypted_key = ''
 		if did is None and (body["flag"]=='1' or body["flag"]=='2'):
@@ -106,15 +106,9 @@ class checkin(Resource):
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				h = SHA256.new(contents)
 				signature = pkcs1_15.new(keyPri).sign(h)
-
-				keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
-				h = SHA256.new(contents)
-				try:
-					pkcs1_15.new(keyPub).verify(h, signature)
-					print "The signature is valid."
-				except (ValueError, TypeError):
-					print "The signature is not valid."
-
+				f = open("documents/signed-"+body["did"].split('.')[0],"w")
+				f.write(signature)
+				f.close()
 
 			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
@@ -186,20 +180,29 @@ class checkout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
-		encrypted_key= open("documents/key-"+body["did"].split('.')[0],"r")
-		with open('../certs/secure-shared-store.key', 'r') as fpri:
-			prikey=fpri.read()
-		keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-		cipher = PKCS1_OAEP.new(keyPri)
-		key = cipher.decrypt(encrypted_key)
+		if flag=='1'
+			encrypted_key= open("documents/key-"+body["did"].split('.')[0],"r")
+			with open('../certs/secure-shared-store.key', 'r') as fpri:
+				prikey=fpri.read()
+			keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
+			cipher = PKCS1_OAEP.new(keyPri)
+			key = cipher.decrypt(encrypted_key)
 
-		encrypted_decoded=base64.b64decode(encrypted_contents)
-		iv=encrypted_decoded[:AES.block_size]
-		decryptor=AES.new(key,AES.MODE_CBC, iv)
-		plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
-		
-		last_character = plain_text[len(plain_text) - 1:]
-		original_contents= plain_text[:-ord(last_character)]
+			encrypted_decoded=base64.b64decode(encrypted_contents)
+			iv=encrypted_decoded[:AES.block_size]
+			decryptor=AES.new(key,AES.MODE_CBC, iv)
+			plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+			
+			last_character = plain_text[len(plain_text) - 1:]
+			original_contents= plain_text[:-ord(last_character)]
+		if flag=='2'
+				keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
+				h = SHA256.new(contents)
+				try:
+					pkcs1_15.new(keyPub).verify(h, signature)
+					print "The signature is valid."
+				except (ValueError, TypeError):
+					print "The signature is not valid."
 		return jsonify(response)
         '''
 		Expected response status codes
