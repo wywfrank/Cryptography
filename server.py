@@ -101,7 +101,7 @@ class checkin(Resource):
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
 				encrypted_key = (cipher.encrypt(key))
 				print "encrypted_key->"+ encrypted_key
-				f = open("documents/key-"+body["did"],"w")
+				f = open("documents/key-"+body["did"].split('.')[0],"w")
 				f.write(encrypted_key)
 				f.close()
 
