@@ -87,9 +87,9 @@ class checkin(Resource):
 		encrypted_key = ''
 		if did is None:
 			if body["flag"]=='1':
-				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
+				key = ''.join(chr(Random.randint(0, 9)) for i in range(16))
 				print 'key', [x for x in key]
-				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
+				iv = ''.join([chr(Random.randint(0, 9)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				num_bytes_to_pad = AES.block_size - len(contents) % AES.block_size
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
