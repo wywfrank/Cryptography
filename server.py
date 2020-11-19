@@ -84,7 +84,7 @@ class checkin(Resource):
 		did=search_owner(conn,(userId,body["did"]))
 		contents=body["contents"]
 		encrypted_key = ''
-		if did is None:
+		if did is None and (body["flag"]=='1' or body["flag"]=='2'):
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
@@ -101,6 +101,10 @@ class checkin(Resource):
 				f = open("documents/key-"+body["did"].split('.')[0],"w")
 				f.write(encrypted_key)
 				f.close()
+			if body["flag"]=='2':
+				m=hashlib.sha256()
+				m.update(contents)
+				print "digist"+m.digest()
 
 
 			row=(body["did"],userId,body["flag"])
