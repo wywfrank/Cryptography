@@ -85,16 +85,17 @@ class checkin(Resource):
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
 				print 'key', [x for x in key]
-				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
+				iv = Random.new().read(AES.block_size)
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				num_bytes_to_pad = AES.block_size - len(body["contents"]) % AES.block_size
 				ascii_string=chr(num_bytes_to_pad)
 				padding=num_bytes_to_pad*ascii_string
 				padded=body["contents"]+padding
 				encrypted= encryptor.encrypt(padded.encode())
+				stored_encrypted=b64encode(iv+encrypted).decode("utf-8")
 				print encrypted
-				encrypted_decoded=base64.b64decode(encrypted+'===')
-				iv=encrypted_decoded[:AES.block_size]
+				# encrypted_decoded=base64.b64decode(encrypted)
+				# iv=encrypted_decoded[:AES.block_size]
 				# decryptor=AES.new(key,AES.MODE_CBC, iv)
 				# content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
 				# print "content"+content
