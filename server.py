@@ -36,15 +36,24 @@ def insert_owner(conn,row):
 	conn.commit()
 	return 
 
+
+def search_did(conn,param):
+	sql='''SELECT did FROM OWNER WHERE did=?
+		'''
+	cur=conn.cursor()
+	cur.execute(sql,param)
+	result=str(cur.fetchone()[0])
+	conn.commit()
+	return result
+
 def search_owner(conn,param):
 	sql='''SELECT userId FROM OWNER WHERE did=?
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
-	result=cur.fetchone()
+	result=str(cur.fetchone()[0])
 	conn.commit()
-	print result
-	return result[0]
+	return result
 
 def insert_session(conn,row):
 	sql='''DELETE FROM SESSION
@@ -81,10 +90,29 @@ class checkin(Resource):
 		session_token=str(body["session_token"])
 		userId=search_session(conn,(session_token,))
 		print "userId "+userId
-		did=search_owner(conn,(body["did"],))
+		if userId is None:
+			response= {
+				'status': 702,
+				'message': 'Access Denied to check in',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+
+		if body["flag"]!='1' or body["flag"]!='2' :
+			response= {
+				'status': 700,
+				'message': 'Bad Flag number',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+		
+		row=(body["did"],userId,body["flag"])
+		insert_owner(conn,row)
+
+		ownerId=search_owner(conn,(body["did"],))
 		contents=str(body["contents"])#str added after flag==1 test
 		encrypted_key = ''
-		if did is None and (body["flag"]=='1' or body["flag"]=='2'):
+		if ownerId ==body["userId"] and ():
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
@@ -110,8 +138,7 @@ class checkin(Resource):
 				f.write(signature)
 				f.close()
 
-			row=(body["did"],userId,body["flag"])
-			insert_owner(conn,row)
+			
 			
 			f = open("documents/"+body["did"],"w")
 			f.write(contents)
