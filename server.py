@@ -99,7 +99,7 @@ class checkin(Resource):
 				
 				keyPub=RSA.importKey(pubkey)
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				encrypted_key = cipher.encrypt(key.encode())
+				encrypted_key = cipher.encrypt(key.encode("utf-8"))
 				print("encrypted_key->", encrypted_key)
 
 				encrypted_decoded=base64.b64decode(contents)
