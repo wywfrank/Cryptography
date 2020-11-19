@@ -28,8 +28,8 @@ db=r"pythonsqlite.db"
 
 
 def insert_owner(conn,row):
-	sql='''INSERT INTO OWNER(did,userId,flag,encrypted_key)
-		VALUES(?,?,?,?)'''
+	sql='''INSERT INTO OWNER(did,userId,flag)
+		VALUES(?,?,?)'''
 	cur=conn.cursor()
 	cur.execute(sql,row)
 	conn.commit()
@@ -99,8 +99,11 @@ class checkin(Resource):
 				
 				keyPub=RSA.importKey(pubkey)
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				encrypted_key = str(cipher.encrypt(key))
+				encrypted_key = (cipher.encrypt(key))
 				print "encrypted_key->"+ encrypted_key
+				f = open("documents/key-"+body["did"],"w")
+				f.write(encrypted_key)
+				f.close()
 
 				encrypted_decoded=base64.b64decode(encrypted_contents)
 				iv=encrypted_decoded[:AES.block_size]
@@ -112,7 +115,7 @@ class checkin(Resource):
 				print "original_contents: \n"+original_contents
 
 				# print "content"+content
-			row=(body["did"],userId,body["flag"],encrypted_key)
+			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
 			
 			f = open("documents/"+body["did"],"w")
@@ -268,8 +271,7 @@ def main():
 		CREATE TABLE IF NOT EXISTS OWNER 
 		(did text NOT NULL,
 		userId text NOT NULL,
-		flag integer NOT NULL,
-		encrypted_key text);
+		flag integer NOT NULL);
 	'''
 	sql_create_GRANT_table = '''
 		CREATE TABLE IF NOT EXISTS GRANT 
