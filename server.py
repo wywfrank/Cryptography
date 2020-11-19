@@ -103,7 +103,7 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 			if body["flag"]=='2':
-				hash=MD5.new(contents).digest()
+				hash=MD5.new(str(contents)).digest()
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				signature=keyPri.sign(hash)
 				print "signature"
