@@ -85,6 +85,7 @@ class checkin(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
+		print "checkin"
 		body=json.loads(data)
 		conn=create_connection(db)
 		session_token=str(body["session_token"])
@@ -96,6 +97,7 @@ class checkin(Resource):
 				'message': 'Access Denied to check in',
 				'session_token': session_token,
 			}
+			print response
 			return jsonify(response)
 
 		if body["flag"]!='1' or body["flag"]!='2' :
@@ -104,6 +106,8 @@ class checkin(Resource):
 				'message': 'Bad Flag number',
 				'session_token': session_token,
 			}
+
+			print response
 			return jsonify(response)
 		
 		row=(body["did"],userId,body["flag"])
