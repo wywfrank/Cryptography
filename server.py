@@ -102,10 +102,11 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 			if body["flag"]=='2':
-				m=hashlib.sha256()
-				m.update(contents)
-				print "digest"
-				m.digest()
+				hash=hashlib.new(contents).digest()
+				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
+				signature=keyPri.sign(hash)
+				print "signature"
+				print signature
 
 
 			row=(body["did"],userId,body["flag"])
