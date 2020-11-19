@@ -112,7 +112,7 @@ class checkin(Resource):
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 
 				dsize=SHA.digest_size
-				sentinel=random.new().read(15+dsize)
+				sentinel=Random.new().read(15+dsize)
 
 				cipher = PKCS1_v1_5.new(keyPri)
 				testoutput = cipher.decrypt(encrypted_key, sentinel)
