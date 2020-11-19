@@ -3,6 +3,7 @@ from flask_restful import Resource, Api
 # TODO: import additional modules as required
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
+import Crypto.Hash.MD5 as MD5
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from Crypto.Cipher import PKCS1_OAEP
@@ -102,7 +103,7 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 			if body["flag"]=='2':
-				hash=hashlib.new(contents).digest()
+				hash=MD5.new(contents).digest()
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				signature=keyPri.sign(hash)
 				print "signature"
