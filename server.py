@@ -98,9 +98,9 @@ class checkin(Resource):
 					pubkey=fpub.read()
 				
 				print key.decode("utf-8")
-				# keyPub=RSA.importKey(pubkey)
-				# cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				# encrypted_key = cipher.encrypt(key.decode("utf-8"))
+				keyPub=RSA.importKey(pubkey)
+				cipher = Cipher_PKCS1_v1_5.new(keyPub)
+				encrypted_key = cipher.encrypt(key.decode("utf-8"))
 				# print("encrypted_key->", encrypted_key)
 
 				encrypted_decoded=base64.b64decode(contents)
@@ -111,7 +111,6 @@ class checkin(Resource):
 				last_character = plain_text[len(plain_text) - 1:]
 				output= plain_text[:-ord(last_character)]
 				print "output"+output
-				encrypted_key=key
 
 				# print "content"+content
 			row=(body["did"],userId,body["flag"],encrypted_key)
