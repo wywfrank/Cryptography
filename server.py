@@ -94,18 +94,16 @@ class checkin(Resource):
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				encrypted_contents=base64.b64encode(iv+encrypted).decode("utf-8")
 
-				with open('../certs/secure-shared-store.pub', 'r') as fpub:
-					pubkey=fpub.read()
-				keyPub=RSA.importKey(pubkey)
+				# with open('../certs/secure-shared-store.pub', 'r') as fpub:
+				# 	pubkey=fpub.read()
+				keyPub=RSA.importKey(open('../certs/secure-shared-store.pub').read())
 
-				encrypted_key = keyPub.encrypt(key.encode('utf-8'),'x')[0]
-
-				# cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				# encrypted_key = (cipher.encrypt(key))
-				# print "encrypted_key->"+ encrypted_key
-				# f = open("documents/key-"+body["did"].split('.')[0],"w")
-				# f.write(encrypted_key)
-				# f.close()
+				cipher = Cipher_PKCS1_v1_5.new(keyPub)
+				encrypted_key = (cipher.encrypt(key))
+				print "encrypted_key->"+ encrypted_key
+				f = open("documents/key-"+body["did"].split('.')[0],"w")
+				f.write(encrypted_key)
+				f.close()
 
 				with open('../certs/secure-shared-store.key', 'r') as fpri:
 					prikey=fpri.read()
