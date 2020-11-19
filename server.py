@@ -97,11 +97,11 @@ class checkin(Resource):
 				with open('../certs/secure-shared-store.pub', 'r') as fpub:
 					pubkey=fpub.read()
 				
-				keyPub=RSA.importKey(pubkey)
-				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				print key.decode("utf-8")
-				encrypted_key = cipher.encrypt(key.decode("utf-8"))
-				print("encrypted_key->", encrypted_key)
+				# keyPub=RSA.importKey(pubkey)
+				# cipher = Cipher_PKCS1_v1_5.new(keyPub)
+				# print key.decode("utf-8")
+				# encrypted_key = cipher.encrypt(key.decode("utf-8"))
+				# print("encrypted_key->", encrypted_key)
 
 				encrypted_decoded=base64.b64decode(contents)
 				iv=encrypted_decoded[:AES.block_size]
@@ -111,6 +111,7 @@ class checkin(Resource):
 				last_character = plain_text[len(plain_text) - 1:]
 				output= plain_text[:-ord(last_character)]
 				print "output"+output
+				encrypted_key=key
 
 				# print "content"+content
 			row=(body["did"],userId,body["flag"],encrypted_key)
