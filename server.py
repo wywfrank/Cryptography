@@ -83,7 +83,7 @@ class checkin(Resource):
 		userId=search_session(conn,(session_token,))
 		print "userId "+userId
 		did=search_owner(conn,(userId,body["did"]))
-		contents=body["contents"]
+		contents=str(body["contents"])
 		encrypted_key = ''
 		if did is None and (body["flag"]=='1' or body["flag"]=='2'):
 			if body["flag"]=='1':
@@ -103,9 +103,9 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 			if body["flag"]=='2':
-				hash=MD5.new(str(contents)).digest()
+				hash=MD5.new(contents).digest()
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-				signature=keyPri.sign(hash)
+				signature=keyPri.sign(hash,'')
 				print "signature"
 				print signature
 
