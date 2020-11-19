@@ -91,13 +91,18 @@ class checkin(Resource):
 				ascii_string=chr(num_bytes_to_pad)
 				padding=num_bytes_to_pad*ascii_string
 				padded=body["contents"]+padding
-				encrypted= encryptor.encrypt(padded.encode())
+				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				stored_encrypted=base64.b64encode(iv+encrypted).decode("utf-8")
 				print stored_encrypted
-				stored_encrypted_decoded=base64.b64decode(stored_encrypted)
-				# iv=encrypted_decoded[:AES.block_size]
-				# decryptor=AES.new(key,AES.MODE_CBC, iv)
-				# content = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+				encrypted_decoded=base64.b64decode(stored_encrypted)
+				iv=encrypted_decoded[:AES.block_size]
+				decryptor=AES.new(key,AES.MODE_CBC, iv)
+				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+				
+				last_character = plain_text[len(plain_text) - 1:]
+				output= plain_text[:-ord(last_character)]
+				print "output"+output
+
 				# print "content"+content
 			row=(body["did"],userId,body["flag"],"testing_key")
 			insert_owner(conn,row)
