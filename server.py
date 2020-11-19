@@ -5,6 +5,7 @@ from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
+from Crypto import Random
 import hashlib
 import json
 import base64 
@@ -107,10 +108,18 @@ class checkin(Resource):
 
 				with open('../certs/secure-shared-store.key', 'r') as fpri:
 					prikey=fpri.read()
-				keyPri=RSA.importKey(prikey)
+				keyPri=RSA.importKey(open('../certs/secure-shared-store.key'),read())
 
-				testoutput=keyPri.decrypt(encrypted_key)
-				print testoutput
+				dsize=SHA.digest_size
+				sentinel=random.new().read(15+dsize)
+
+				cipher = PKCS1_v1_5.new(keyPri)
+				testoutput = cipher.decrypt(encrypted_key, sentinel)
+
+
+
+
+				print "key"+testoutput
 
 				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
 				# key = (cipher.decrypt(encrypted_key))
