@@ -87,50 +87,22 @@ class checkin(Resource):
 		if did is None:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
-				print 'key', [x for x in key]
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				num_bytes_to_pad = AES.block_size - len(contents) % AES.block_size
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				encrypted_contents=base64.b64encode(iv+encrypted).decode("utf-8")
-
 				
 				keyPub=RSA.importKey(open('../certs/secure-shared-store.pub').read())
 				cipher=PKCS1_OAEP.new(keyPub)
 				encrypted_key=cipher.encrypt(key)
 				
-				print "encrypted_key->"+ encrypted_key
 				f = open("documents/key-"+body["did"].split('.')[0],"w")
 				f.write(encrypted_key)
 				f.close()
 
-				with open('../certs/secure-shared-store.key', 'r') as fpri:
-					prikey=fpri.read()
-				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-				
-				cipher = PKCS1_OAEP.new(keyPri)
-				key = cipher.decrypt(encrypted_key)
 
-
-
-
-				print "key: "+key
-
-				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
-				# key = (cipher.decrypt(encrypted_key))
-				# print 'key', [x for x in key]
-
-				encrypted_decoded=base64.b64decode(encrypted_contents)
-				iv=encrypted_decoded[:AES.block_size]
-				decryptor=AES.new(key,AES.MODE_CBC, iv)
-				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
-				
-				last_character = plain_text[len(plain_text) - 1:]
-				original_contents= plain_text[:-ord(last_character)]
-				print "original_contents: \n"+original_contents
-
-				# print "content"+content
 			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
 			
@@ -201,6 +173,20 @@ class checkout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
+		encrypted_key= open("documents/key-"+body["did"].split('.')[0],"r")
+		with open('../certs/secure-shared-store.key', 'r') as fpri:
+			prikey=fpri.read()
+		keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
+		cipher = PKCS1_OAEP.new(keyPri)
+		key = cipher.decrypt(encrypted_key)
+
+		encrypted_decoded=base64.b64decode(encrypted_contents)
+		iv=encrypted_decoded[:AES.block_size]
+		decryptor=AES.new(key,AES.MODE_CBC, iv)
+		plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+		
+		last_character = plain_text[len(plain_text) - 1:]
+		original_contents= plain_text[:-ord(last_character)]
 		return jsonify(response)
         '''
 		Expected response status codes
