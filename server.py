@@ -108,9 +108,11 @@ class checkin(Resource):
 		
 		row=(body["did"],userId,body["flag"])
 		insert_owner(conn,row)
+		print row
 
 		ownerId=search_owner(conn,(body["did"],))
 		contents=str(body["contents"])#str added after flag==1 test
+		print contents
 		encrypted_key = ''
 		if ownerId ==body["userId"] and ():
 			if body["flag"]=='1':
