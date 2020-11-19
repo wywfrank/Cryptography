@@ -110,12 +110,12 @@ class checkin(Resource):
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				
 				cipher = PKCS1_OAEP.new(keyPri)
-				test = cipher.decrypt(encrypted_key)
+				key = cipher.decrypt(encrypted_key)
 
 
 
 
-				print "key"+test
+				print "key"+key
 
 				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
 				# key = (cipher.decrypt(encrypted_key))
