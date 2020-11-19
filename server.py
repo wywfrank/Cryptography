@@ -76,7 +76,9 @@ def search_session(conn,session_token):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,session_token)
-	userId=cur.fetchone()[0]
+	result = None
+	if cur.fetchone() is not None:
+		result=cur.fetchone()[0]
 	conn.commit()
 	return userId
 
