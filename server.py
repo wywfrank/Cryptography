@@ -115,7 +115,7 @@ class checkin(Resource):
 
 
 
-				print "key"+key
+				print "key: "+key
 
 				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
 				# key = (cipher.decrypt(encrypted_key))
