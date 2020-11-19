@@ -2,11 +2,10 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 # TODO: import additional modules as required
 from Crypto.Signature import pkcs1_15
-from Crypto.Cipher import PKCS1_v1_5
 from Crypto.Hash import SHA256
-from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
+from Crypto.Cipher import PKCS1_OAEP
 from Crypto import Random
 import hashlib
 import json
@@ -98,9 +97,8 @@ class checkin(Resource):
 
 				
 				keyPub=RSA.importKey(open('../certs/secure-shared-store.pub').read())
-				h = (SHA.new(key))
-				cipher=PKCS1_v1_5.new(keyPub)
-				encrypted_key=cipher.encrypt(key+h.digest())
+				cipher=PKCS1_OAEP.new(keyPub)
+				encrypted_key=cipher.encrypt(key)
 				
 				print "encrypted_key->"+ encrypted_key
 				f = open("documents/key-"+body["did"].split('.')[0],"w")
@@ -110,12 +108,9 @@ class checkin(Resource):
 				with open('../certs/secure-shared-store.key', 'r') as fpri:
 					prikey=fpri.read()
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-
-				dsize=SHA.digest_size
-				sentinel=Random.new().read(15+dsize)
-
-				cipher = PKCS1_v1_5.new(keyPri)
-				test = cipher.decrypt(encrypted_key, sentinel)
+				
+				cipher = PKCS1_OAEP.new(keyPri)
+				test = cipher.decrypt(encrypted_key)
 
 
 
