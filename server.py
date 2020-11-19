@@ -85,9 +85,9 @@ class checkin(Resource):
 		encrypted_key = ''
 		if did is None:
 			if body["flag"]=='1':
-				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
+				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				print 'key', [x for x in key]
-				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
+				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				num_bytes_to_pad = AES.block_size - len(contents) % AES.block_size
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
@@ -99,7 +99,7 @@ class checkin(Resource):
 				
 				keyPub=RSA.importKey(pubkey)
 				cipher = Cipher_PKCS1_v1_5.new(keyPub)
-				print "Byte key to unicode->"+key.decode("utf-8")
+				print key.decode("utf-8")
 				encrypted_key = cipher.encrypt(key.decode("utf-8"))
 				print("encrypted_key->", encrypted_key)
 
