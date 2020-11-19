@@ -89,6 +89,7 @@ class checkin(Resource):
 		body=json.loads(data)
 		conn=create_connection(db)
 		session_token=str(body["session_token"])
+
 		userId=search_session(conn,(session_token,))
 		print "userId "+userId
 		if userId is None:
@@ -99,6 +100,7 @@ class checkin(Resource):
 			}
 			print response
 			return jsonify(response)
+
 		print body["flag"]
 		if ((body["flag"]) not in ['1','2']) :
 			response= {
@@ -106,17 +108,20 @@ class checkin(Resource):
 				'message': 'Bad Flag number',
 				'session_token': session_token,
 			}
-
 			print response
 			return jsonify(response)
 		
-		row=(body["did"],userId,body["flag"])
-		insert_owner(conn,row)
-		print row
+		did=search_did(conn,(body["did"],))
+		if did is None: #create new did entry 
+			row=(body["did"],userId,body["flag"])
+			insert_owner(conn,row)
+
+		if did:
+			row=(body["did"],userId,body["flag"])
+			insert_owner(conn,row)
 
 		ownerId=search_owner(conn,(body["did"],))
-		contents=str(body["contents"])#str added after flag==1 test
-		print contents
+		contents=str(body["contents"]) #str added after flag==1 test
 		encrypted_key = ''
 		if ownerId == userId:
 			if body["flag"]=='1':
@@ -143,7 +148,6 @@ class checkin(Resource):
 				f = open("documents/signed-"+body["did"].split('.')[0],"w")
 				f.write(signature)
 				f.close()
-
 			
 			
 			f = open("documents/"+body["did"],"w")
