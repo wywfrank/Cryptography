@@ -87,9 +87,9 @@ class checkin(Resource):
 		encrypted_key = ''
 		if did is None:
 			if body["flag"]=='1':
-				key = ''.join(chr(Random.randint(0, 9)) for i in range(16))
+				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				print 'key', [x for x in key]
-				iv = ''.join([chr(Random.randint(0, 9)) for i in range(16)])
+				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				num_bytes_to_pad = AES.block_size - len(contents) % AES.block_size
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
@@ -115,12 +115,12 @@ class checkin(Resource):
 				sentinel=Random.new().read(15+dsize)
 
 				cipher = PKCS1_v1_5.new(keyPri)
-				testoutput = cipher.decrypt(encrypted_key, sentinel)
+				key = cipher.decrypt(encrypted_key, sentinel)
 
 
 
 
-				print "key"+testoutput
+				print "key"+key
 
 				# cipher = Cipher_PKCS1_v1_5.new(keyPri)
 				# key = (cipher.decrypt(encrypted_key))
