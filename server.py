@@ -98,7 +98,7 @@ class checkin(Resource):
 					pubkey=fpub.read()
 				keyPub=RSA.importKey(pubkey)
 
-				encrypted_key = keyPub.encrypt(key,'x')[0]
+				encrypted_key = keyPub.encrypt(key.encode("utf-8"))
 
 				# cipher = Cipher_PKCS1_v1_5.new(keyPub)
 				# encrypted_key = (cipher.encrypt(key))
