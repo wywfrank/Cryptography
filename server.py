@@ -15,6 +15,7 @@ import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 import random
+from Crypto.Cipher import PKCS1_v1_5 as Cipher_PKCS1_v1_5
 
 
 secure_shared_service = Flask(__name__)
@@ -81,7 +82,7 @@ class checkin(Resource):
 		print "userId "+userId
 		did=search_owner(conn,(userId,body["did"]))
 		contents=body["contents"]
-		key = ''
+		encrypted_key = ''
 		if did is None:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
@@ -93,13 +94,13 @@ class checkin(Resource):
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				contents=base64.b64encode(iv+encrypted).decode("utf-8")
 
-				# cur_path = os.path.dirname(__file__)
-				# print cur_path
-				# new_path = os.path.relpath('../certs/secure-shared-store.pub', cur_path)
-				# print new_path
-				f= open('../certs/secure-shared-store.pub', 'r')
-				print "public key "
-				print f.readlines()
+				with open('../certs/secure-shared-store.pub', 'r') as fpub:
+					pubkey=fpub.read()
+				
+				keyPub=RSA.importKey(pubkey)
+				cipher = Cipher_PKCS1_v1_5.new(keyPub)
+				encrypted_key = cipher.encrypt(key.encode())
+				print("encrypted_key->", encrypted_key)
 
 				encrypted_decoded=base64.b64decode(contents)
 				iv=encrypted_decoded[:AES.block_size]
@@ -111,7 +112,7 @@ class checkin(Resource):
 				print "output"+output
 
 				# print "content"+content
-			row=(body["did"],userId,body["flag"],key)
+			row=(body["did"],userId,body["flag"],encrypted_key)
 			insert_owner(conn,row)
 			
 			f = open("documents/"+body["did"],"w")
