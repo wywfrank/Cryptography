@@ -85,7 +85,7 @@ class checkin(Resource):
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
 				print 'key', [x for x in key]
-				iv = random.new().read(AES.block_size)
+				iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
 				encryptor = AES.new(key, AES.MODE_CBC, iv)
 				num_bytes_to_pad = AES.block_size - len(body["contents"]) % AES.block_size
 				ascii_string=chr(num_bytes_to_pad)
