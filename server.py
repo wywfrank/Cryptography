@@ -105,6 +105,15 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 
+				with open('../certs/secure-shared-store.key', 'r') as fpri:
+					prikey=fpri.read()
+				
+				keyPri=RSA.importKey(prikey)
+				cipher = Cipher_PKCS1_v1_5.new(keyPri)
+
+				key = (cipher.decrypt(encrypted_key))
+				print 'key', [x for x in key]
+
 				encrypted_decoded=base64.b64decode(encrypted_contents)
 				iv=encrypted_decoded[:AES.block_size]
 				decryptor=AES.new(key,AES.MODE_CBC, iv)
