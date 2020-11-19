@@ -180,7 +180,7 @@ class checkout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
-		if flag=='1'
+		if flag=='1':
 			encrypted_key= open("documents/key-"+body["did"].split('.')[0],"r")
 			with open('../certs/secure-shared-store.key', 'r') as fpri:
 				prikey=fpri.read()
@@ -195,14 +195,15 @@ class checkout(Resource):
 			
 			last_character = plain_text[len(plain_text) - 1:]
 			original_contents= plain_text[:-ord(last_character)]
-		if flag=='2'
-				keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
-				h = SHA256.new(contents)
-				try:
-					pkcs1_15.new(keyPub).verify(h, signature)
-					print "The signature is valid."
-				except (ValueError, TypeError):
-					print "The signature is not valid."
+		if flag=='2':
+			keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
+			h = SHA256.new(contents)
+			try:
+				pkcs1_15.new(keyPub).verify(h, signature)
+				print "The signature is valid."
+			except (ValueError, TypeError):
+				print "The signature is not valid."
+		response = {}
 		return jsonify(response)
         '''
 		Expected response status codes
