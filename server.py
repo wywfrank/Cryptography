@@ -8,7 +8,6 @@ from Crypto.Cipher import AES
 import hashlib
 import json
 import base64 
-from base64 import b64encode,b64decode
 from uuid import uuid4
 import sqlite3
 from sqlite3 import Error
@@ -93,7 +92,7 @@ class checkin(Resource):
 				padding=num_bytes_to_pad*ascii_string
 				padded=body["contents"]+padding
 				encrypted= encryptor.encrypt(padded.encode())
-				stored_encrypted=b64encode(iv+encrypted).decode("utf-8")
+				stored_encrypted=base64.b64encode(iv+encrypted).decode("utf-8")
 				print encrypted
 				# encrypted_decoded=base64.b64decode(encrypted)
 				# iv=encrypted_decoded[:AES.block_size]
