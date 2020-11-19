@@ -104,7 +104,8 @@ class checkin(Resource):
 			if body["flag"]=='2':
 				m=hashlib.sha256()
 				m.update(contents)
-				print "digist"+m.digest()
+				print "digest"
+				m.digest()
 
 
 			row=(body["did"],userId,body["flag"])
