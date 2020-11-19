@@ -95,7 +95,7 @@ class checkin(Resource):
 				print contents
 				
 
-				encrypted_decoded=base64.b64decode(stored_encrypted)
+				encrypted_decoded=base64.b64decode(contents)
 				iv=encrypted_decoded[:AES.block_size]
 				decryptor=AES.new(key,AES.MODE_CBC, iv)
 				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
@@ -109,7 +109,7 @@ class checkin(Resource):
 			insert_owner(conn,row)
 			
 			f = open("documents/"+body["did"],"w")
-			f.write(body["contents"])
+			f.write(contents)
 			f.close()
 			print "Done checkin"
 			response= {
