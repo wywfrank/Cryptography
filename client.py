@@ -5,6 +5,7 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 import json
 import base64
+import datetime
 
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
@@ -116,6 +117,10 @@ def grant():
 		 - time duration (in seconds) for which acess is granted
 		Send request to server with required parameters (action = 'grant') using post_request()
 	'''
+	a = datetime.datetime.now().time()
+	b = a + datetime.timedelta(seconds=300) # days, seconds, then other fields.
+	print(a.time())
+	print(b.time())
 	return
 
 def delete():
