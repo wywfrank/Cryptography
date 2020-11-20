@@ -52,10 +52,11 @@ def search_owner(conn,param):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
-	result is None
-	if cur.fetchone() is not None:
-		result=cur.fetchone()[0]
+	result=cur.fetchone()
+	if result is not None:
+		result=result[0]
 	conn.commit()
+	print result
 	return result
 
 def insert_session(conn,row):
