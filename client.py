@@ -124,7 +124,7 @@ def grant():
 	expire_date=raw_input("Time duration (in seconds) for access:")
 
 	a = datetime.datetime.now()
-	expire_date = a + datetime.timedelta(seconds=expire_date) # days, seconds, then other fields.
+	expire_date = a + datetime.timedelta(seconds=int(expire_date)) # days, seconds, then other fields.
 	expire_date=expire_date.time()
 	print expire_date
 	return
