@@ -142,6 +142,7 @@ def main():
 				5. Logout 
 		''')
 		if option=='1': checkin()
+		if option=='2': checkout()
 
 	
 	'''
