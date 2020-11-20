@@ -152,6 +152,7 @@ def main():
 		''')
 		if option=='1': checkin()
 		if option=='2': checkout()
+		if option=='3': grant()
 
 	
 	'''
