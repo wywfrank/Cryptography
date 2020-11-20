@@ -38,7 +38,7 @@ def insert_owner(conn,row):
 
 
 def search_did(conn,param):
-	sql='''SELECT did FROM OWNER WHERE did=?
+	sql='''SELECT did FROM OWNER WHERE did=? and flag=?
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
@@ -118,17 +118,13 @@ class checkin(Resource):
 			print response
 			return jsonify(response)
 		
-		did=search_did(conn,(body["did"],))
-		if did is None: #create new did entry 
-			row=(body["did"],userId,body["flag"])
-			insert_owner(conn,row)
-
-		if did:
+		did=search_did(conn,(body["did"],body["flag"]))
+		if did is None: #create new did entry if did+flag doesn't exist
 			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
 
 		ownerId=search_owner(conn,(body["did"],))
-		contents=str(body["contents"]) #str added after flag==1 test
+		contents=str(body["contents"]) 
 		encrypted_key = ''
 		if ownerId == userId:
 			if body["flag"]=='1':
