@@ -117,9 +117,9 @@ def grant():
 		 - time duration (in seconds) for which acess is granted
 		Send request to server with required parameters (action = 'grant') using post_request()
 	'''
-	a = datetime.datetime.now().time()
-	b = a + datetime.timedelta(seconds=300) # days, seconds, then other fields.
+	a = datetime.datetime.now()
 	print a.time()
+	b = a + datetime.timedelta(seconds=300) # days, seconds, then other fields.
 	print b.time()
 	return
 
