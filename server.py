@@ -133,6 +133,7 @@ class checkin(Resource):
 				padded=contents+num_bytes_to_pad*(chr(num_bytes_to_pad))
 				encrypted= encryptor.encrypt(padded.encode("utf-8"))
 				encrypted_contents=base64.b64encode(iv+encrypted).decode("utf-8")
+				contents=encrypted_contents
 				
 				keyPub=RSA.importKey(open('../certs/secure-shared-store.pub').read())
 				cipher=PKCS1_OAEP.new(keyPub)
@@ -143,8 +144,6 @@ class checkin(Resource):
 				f.close()
 
 				encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
-				# with open('../certs/secure-shared-store.key', 'r') as fpri:
-				# 	prikey=fpri.read()
 				print "encrypted_key"
 				print encrypted_key
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
@@ -269,13 +268,11 @@ class checkout(Resource):
 		}
 		print "contents: "+contents
 		if flag==1:
-			encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"r")
-			# with open('../certs/secure-shared-store.key', 'r') as fpri:
-			# 	prikey=fpri.read()
+			encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
 			keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 			cipher = PKCS1_OAEP.new(keyPri)
 			key = cipher.decrypt(encrypted_key)
-			encrypted_decoded=base64.b64decode(contents)
+			encrypted_decoded=base64.b64decode(encrypted_contents)
 			iv=encrypted_decoded[:AES.block_size]
 			decryptor=AES.new(key,AES.MODE_CBC, iv)
 			plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
