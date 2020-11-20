@@ -233,6 +233,7 @@ class checkout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
+		body=json.loads(data)
 		if os.path.exists('documents/'+body["did"])==False:
 			response = {
 				'status': 704,
@@ -241,7 +242,6 @@ class checkout(Resource):
 			}
 			return jsonify(response)
 		conn=create_connection(db)
-		body=json.loads(data)
 		ownerId=search_owner(conn,(body["did"],))
 		flag=''
 		if ownerId is not None:
