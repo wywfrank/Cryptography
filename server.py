@@ -55,8 +55,6 @@ def search_owner(conn,param):
 	cur.execute(sql,param)
 	result=cur.fetchone()
 	conn.commit()
-	print "search_owner"
-	print result
 	return result
 
 def insert_session(conn,row):
@@ -224,6 +222,9 @@ class checkout(Resource):
 		conn=create_connection(db)
 		body=json.loads(data)
 		ownerId=search_owner(conn,(body["did"],))
+		print "ownerId"
+		print ownerId[0]
+		print ownerId[1]
 		flag=''
 		if ownerId is not None:
 			ownerId=ownerId[0]
