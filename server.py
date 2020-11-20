@@ -142,7 +142,7 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 
-				encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"r")
+				encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
 				# with open('../certs/secure-shared-store.key', 'r') as fpri:
 				# 	prikey=fpri.read()
 				print "encrypted_key"
