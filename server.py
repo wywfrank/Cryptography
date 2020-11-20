@@ -274,7 +274,7 @@ class checkout(Resource):
 			original_contents= plain_text[:-ord(last_character)]
 			response = {
 				'status': 200,
-				'did': did,
+				'did': body["did"],
 				'message': 'Document Successfully checked out',
 				'contents': original_contents,
 				'session_token': session_token,
