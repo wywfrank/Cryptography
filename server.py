@@ -17,7 +17,6 @@ import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 import random
-import datetime
 
 
 secure_shared_service = Flask(__name__)
@@ -404,8 +403,7 @@ def main():
 		(did text NOT NULL,
 		userId text NOT NULL,
 		accessRight integer NOT NULL,
-		time integer,
-		expire_date timestamp);
+		expire_date timestamp NOT NULL);
 	'''
 	sql_create_SESSION_table = '''
 		CREATE TABLE IF NOT EXISTS SESSION 

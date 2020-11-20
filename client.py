@@ -117,10 +117,16 @@ def grant():
 		 - time duration (in seconds) for which acess is granted
 		Send request to server with required parameters (action = 'grant') using post_request()
 	'''
+
+	did=raw_input("Enter unique document name (1.txt):")
+	userId=raw_input("User ID to whom access should be granted (0 for all users):")
+	accessRight=raw_input("Type of acess to be granted (1 - checkin, 2 - checkout, 3 - both:")
+	expire_date=raw_input("Time duration (in seconds) for access:")
+
 	a = datetime.datetime.now()
-	print a.time()
-	b = a + datetime.timedelta(seconds=300) # days, seconds, then other fields.
-	print b.time()
+	expire_date = a + datetime.timedelta(seconds=expire_date) # days, seconds, then other fields.
+	expire_date=expire_date.time()
+	print expire_date
 	return
 
 def delete():
