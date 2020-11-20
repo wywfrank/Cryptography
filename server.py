@@ -240,14 +240,14 @@ class checkout(Resource):
 			return jsonify(response)
 		
 		contents=open('documents/'+body["did"], 'r').read()
-		print "flag: "+flag
+		print "flag: "+str(flag)
 		response = {
 			'status': 700,
 			'message': 'Other failures',
 			'session_token': session_token,
 		}
 
-		if flag=='1':
+		if flag==1:
 			encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"r")
 			with open('../certs/secure-shared-store.key', 'r') as fpri:
 				prikey=fpri.read()
@@ -267,7 +267,7 @@ class checkout(Resource):
 				'contents': original_contents,
 				'session_token': session_token,
 			}
-		if flag=='2':
+		if flag==2:
 			keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
 			h = SHA256.new(contents)
 			try:
