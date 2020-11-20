@@ -288,7 +288,7 @@ class checkout(Resource):
 				print "The signature is valid."
 				response = {
 					'status': 200,
-					'did': did,
+					'did': body["did"],
 					'message': 'Document Successfully checked out',
 					'contents': contents,
 					'session_token': session_token,
