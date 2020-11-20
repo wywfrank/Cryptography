@@ -227,8 +227,7 @@ class checkout(Resource):
 		print ownerId[1]
 		flag=''
 		if ownerId is not None:
-			ownerId=ownerId[0]
-			flag=ownerId[1]
+			ownerId,flag=ownerId[0],ownerId[1]
 		#authId=search_auth(conn,(body["did"],"1"))
 		if ownerId != userId: #and authId !=userId
 			response = {
