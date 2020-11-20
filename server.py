@@ -249,8 +249,8 @@ class checkout(Resource):
 		print "contents: "+contents
 		if flag==1:
 			encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"r")
-			with open('../certs/secure-shared-store.key', 'r') as fpri:
-				prikey=fpri.read()
+			# with open('../certs/secure-shared-store.key', 'r') as fpri:
+			# 	prikey=fpri.read()
 			keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 			cipher = PKCS1_OAEP.new(keyPri)
 			key = cipher.decrypt(encrypted_key)
