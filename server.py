@@ -210,7 +210,7 @@ class login(Resource):
 		else:
 			response = {
 				'status': 700,
-				'message': 'Login Failed'
+				'message': 'Login Failed',
 				'session_token': session_token,
 			}
 		return jsonify(response)
@@ -228,7 +228,7 @@ class checkout(Resource):
 		if ownerId != userId: #and authId !=userId
 			response = {
 				'status': 702 ,
-				'message': 'Access denied to check out'
+				'message': 'Access denied to check out',
 				'session_token': session_token,
 			}
 			return jsonify(response)
