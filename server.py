@@ -222,13 +222,14 @@ class checkout(Resource):
 		conn=create_connection(db)
 		body=json.loads(data)
 		ownerId=search_owner(conn,(body["did"],))
-		print "ownerId"
-		print ownerId[0]
-		print ownerId[1]
 		flag=''
 		if ownerId is not None:
 			ownerId,flag=ownerId[0],ownerId[1]
 		#authId=search_auth(conn,(body["did"],"1"))
+
+		session_token=str(body["session_token"])
+		userId=search_session(conn,(session_token,))
+		
 		if ownerId != userId: #and authId !=userId
 			response = {
 				'status': 702 ,
