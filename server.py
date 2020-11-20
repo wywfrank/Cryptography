@@ -144,7 +144,7 @@ class checkin(Resource):
 				cipher=PKCS1_OAEP.new(keyPub)
 				encrypted_key=cipher.encrypt(key)
 				
-				f = open("documents/key-"+body["did"].split('.')[0],"w")
+				f = open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"w")
 				f.write(encrypted_key)
 				f.close()
 
@@ -152,7 +152,7 @@ class checkin(Resource):
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				h = SHA256.new(contents)
 				signature = pkcs1_15.new(keyPri).sign(h)
-				f = open("documents/signed-"+body["did"].split('.')[0],"w")
+				f = open("documents/signed-"+body["did"].split('.')[0]+body["did"].split('.')[1],"w")
 				f.write(signature)
 				f.close()
 			
