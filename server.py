@@ -233,15 +233,9 @@ class checkout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
-		body=json.loads(data)
-		if os.path.exists('documents/'+body["did"])==False:
-			response = {
-				'status': 704,
-				'message': 'Check out failed since file not found on the server',
-				'session_token': session_token,
-			}
-			return jsonify(response)
+		
 		conn=create_connection(db)
+		body=json.loads(data)
 		ownerId=search_owner(conn,(body["did"],))
 		flag=''
 		if ownerId is not None:
@@ -251,6 +245,14 @@ class checkout(Resource):
 		session_token=str(body["session_token"])
 		userId=search_session(conn,(session_token,))
 		response=''
+
+		if os.path.exists('documents/'+body["did"])==False:
+			response = {
+				'status': 704,
+				'message': 'Check out failed since file not found on the server',
+				'session_token': session_token,
+			}
+			return jsonify(response)
 
 		if ownerId != userId: #and authId !=userId
 			response = {
