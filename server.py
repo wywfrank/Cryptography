@@ -148,8 +148,12 @@ class checkin(Resource):
 				print "encrypted_key"
 				print encrypted_key
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
+
+				print "keyPri"
 				cipher = PKCS1_OAEP.new(keyPri)
+				print "cipher"
 				key = cipher.decrypt(encrypted_key)
+				print "key"
 				encrypted_decoded=base64.b64decode(encrypted_contents)
 				iv=encrypted_decoded[:AES.block_size]
 				decryptor=AES.new(key,AES.MODE_CBC, iv)
