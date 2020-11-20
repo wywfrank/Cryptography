@@ -102,7 +102,7 @@ def checkout():
 
 	contents=json.load(open(gt_username,"r"))["contents"]
 	did=json.load(open(gt_username,"r"))["did"]
-	f=open("documents/checkout/"+body["did"],"w")
+	f=open("documents/checkout/"+did,"w")
 	f.write(contents)
 	f.close()
 	return
