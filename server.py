@@ -75,6 +75,8 @@ def search_session(conn,session_token):
 	sql='''SELECT userId FROM SESSION WHERE session_token=?
 		'''
 	cur=conn.cursor()
+	print "session token: "
+	print session_token
 	cur.execute(sql,session_token)
 	result = None
 	if cur.fetchone() is not None:
