@@ -99,12 +99,12 @@ def checkout():
 	body=json.dumps(data)	
 	post_request(server_name,'checkout',body,'certs/node1CA.crt','certs/node1CA.key')
 	
-
-	contents=json.load(open(gt_username,"r"))["contents"]
-	did=json.load(open(gt_username,"r"))["did"]
-	f=open("documents/checkout/"+did,"w")
-	f.write(contents)
-	f.close()
+	if json.load(open(gt_username,"r"))["status"]==700:
+		contents=json.load(open(gt_username,"r"))["contents"]
+		did=json.load(open(gt_username,"r"))["did"]
+		f=open("documents/checkout/"+did,"w")
+		f.write(contents)
+		f.close()
 	return
 
 def grant():
