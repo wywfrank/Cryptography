@@ -254,7 +254,7 @@ class checkout(Resource):
 			response = {
 				'status': 200,
 				'did': did,
-				'message': 'Document Successfully checked out'
+				'message': 'Document Successfully checked out',
 				'contents': original_contents,
 				'session_token': session_token,
 			}
@@ -267,7 +267,7 @@ class checkout(Resource):
 				response = {
 					'status': 200,
 					'did': did,
-					'message': 'Document Successfully checked out'
+					'message': 'Document Successfully checked out',
 					'contents': contents,
 					'session_token': session_token,
 				}
@@ -275,7 +275,7 @@ class checkout(Resource):
 				print "The signature is not valid."
 				response = {
 					'status': 703,
-					'message': 'Check out failed due to broken integrity'
+					'message': 'Check out failed due to broken integrity',
 					'session_token': session_token,
 				}
 			
