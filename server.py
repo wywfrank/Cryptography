@@ -42,10 +42,11 @@ def search_did(conn,param):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
+	result=cur.fetchone()
+	if result is not None:
+		result=result[0]
 	conn.commit()
-	print "Search did result: "
-	print cur.fetchone()
-	return cur.fetchone()
+	return result
 
 def search_owner(conn,param):
 	sql='''SELECT userId FROM OWNER WHERE did=?
@@ -56,7 +57,6 @@ def search_owner(conn,param):
 	if result is not None:
 		result=result[0]
 	conn.commit()
-	print result
 	return result
 
 def insert_session(conn,row):
@@ -82,7 +82,6 @@ def search_session(conn,session_token):
 	if result is not None:
 		result=result[0]
 	conn.commit()
-	print result
 	return result
 
 
