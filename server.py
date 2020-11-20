@@ -220,6 +220,7 @@ class checkout(Resource):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
 		conn=create_connection(db)
+		body=json.loads(data)
 		ownerId=search_owner(conn,(body["did"],))
 		flag=''
 		if ownerId is not None:
