@@ -78,7 +78,7 @@ def search_session(conn,session_token):
 	cur.execute(sql,session_token)
 	result = None
 	if cur.fetchone() is not None:
-		result=cur.fetchone()
+		result=cur.fetchone() # Took awaay [0]
 	conn.commit()
 	return result
 
@@ -97,7 +97,6 @@ class checkin(Resource):
 		session_token=str(body["session_token"])
 
 		userId=search_session(conn,(session_token,))
-		print "userId "+userId
 		if userId is None:
 			response= {
 				'status': 700,
@@ -106,7 +105,7 @@ class checkin(Resource):
 			}
 			print response
 			return jsonify(response)
-
+		userId=str(userId)
 		print body["flag"]
 		if ((body["flag"]) not in ['1','2']) :
 			response= {
