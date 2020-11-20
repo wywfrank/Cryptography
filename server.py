@@ -143,23 +143,17 @@ class checkin(Resource):
 				f.write(encrypted_key)
 				f.close()
 
-				encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
-				print "encrypted_key"
-				print encrypted_key
-				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-
-				print "keyPri"
-				cipher = PKCS1_OAEP.new(keyPri)
-				print "cipher"
-				key = cipher.decrypt(encrypted_key)
-				print "key"
-				encrypted_decoded=base64.b64decode(encrypted_contents)
-				iv=encrypted_decoded[:AES.block_size]
-				decryptor=AES.new(key,AES.MODE_CBC, iv)
-				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
-				last_character = plain_text[len(plain_text) - 1:]
-				original_contents= plain_text[:-ord(last_character)]
-				print original_contents
+				# encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
+				# keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
+				# cipher = PKCS1_OAEP.new(keyPri)
+				# key = cipher.decrypt(encrypted_key)
+				# encrypted_decoded=base64.b64decode(encrypted_contents)
+				# iv=encrypted_decoded[:AES.block_size]
+				# decryptor=AES.new(key,AES.MODE_CBC, iv)
+				# plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
+				# last_character = plain_text[len(plain_text) - 1:]
+				# original_contents= plain_text[:-ord(last_character)]
+				# print original_contents
 				
 
 			if body["flag"]=='2':
@@ -259,7 +253,7 @@ class checkout(Resource):
 			}
 			return jsonify(response)
 		
-		contents=open('documents/'+body["did"], 'r').read()
+		contents=open('documents/'+body["did"]).read()
 		print "flag: "+str(flag)
 		response = {
 			'status': 700,
@@ -272,7 +266,7 @@ class checkout(Resource):
 			keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 			cipher = PKCS1_OAEP.new(keyPri)
 			key = cipher.decrypt(encrypted_key)
-			encrypted_decoded=base64.b64decode(encrypted_contents)
+			encrypted_decoded=base64.b64decode(contents)
 			iv=encrypted_decoded[:AES.block_size]
 			decryptor=AES.new(key,AES.MODE_CBC, iv)
 			plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
