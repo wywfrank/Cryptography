@@ -96,7 +96,7 @@ def checkout():
 		'did':did,
 		'session_token':json.load(open(gt_username,"r"))["session_token"],
 	}
-
+	body=json.dumps(data)	
 	post_request(server_name,'checkout',body,'certs/node1CA.crt','certs/node1CA.key')
 	
 	data = request.get_json()
