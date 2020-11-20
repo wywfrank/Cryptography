@@ -49,13 +49,11 @@ def search_did(conn,param):
 	return result
 
 def search_owner(conn,param):
-	sql='''SELECT userId FROM OWNER WHERE did=?
+	sql='''SELECT userId,flag FROM OWNER WHERE did=?
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
 	result=cur.fetchone()
-	if result is not None:
-		result=result[0]
 	conn.commit()
 	return result
 
@@ -93,7 +91,6 @@ class checkin(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkin functionality
-		print "checkin"
 		body=json.loads(data)
 		conn=create_connection(db)
 		session_token=str(body["session_token"])
@@ -108,7 +105,6 @@ class checkin(Resource):
 			print response
 			return jsonify(response)
 		userId=str(userId)
-		print body["flag"]
 		if ((body["flag"]) not in ['1','2']) :
 			response= {
 				'status': 700,
@@ -124,9 +120,11 @@ class checkin(Resource):
 			insert_owner(conn,row)
 
 		ownerId=search_owner(conn,(body["did"],))
+		if ownerId is not None:
+			ownerId=ownerId[0]
 		contents=str(body["contents"]) 
 		encrypted_key = ''
-		if ownerId == userId:
+		if ownerId == userId: #must be owner or authorized(need to implement AUTH)
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
@@ -213,6 +211,7 @@ class login(Resource):
 			response = {
 				'status': 700,
 				'message': 'Login Failed'
+				'session_token': session_token,
 			}
 		return jsonify(response)
 
@@ -220,30 +219,66 @@ class checkout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement checkout functionality
+		ownerId=search_owner(conn,(body["did"],))
+		flag=''
+		if ownerId is not None:
+			ownerId=ownerId[0]
+			flag=ownerId[1]
+		#authId=search_auth(conn,(body["did"],"1"))
+		if ownerId != userId: #and authId !=userId
+			response = {
+				'status': 702 ,
+				'message': 'Access denied to check out'
+				'session_token': session_token,
+			}
+			return jsonify(response)
+		
+		contents=open('documents/'+body["did"], 'r').read()
+		print contents
+
 		if flag=='1':
-			encrypted_key= open("documents/key-"+body["did"].split('.')[0],"r")
+			encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"r")
 			with open('../certs/secure-shared-store.key', 'r') as fpri:
 				prikey=fpri.read()
 			keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 			cipher = PKCS1_OAEP.new(keyPri)
 			key = cipher.decrypt(encrypted_key)
 
-			encrypted_decoded=base64.b64decode(encrypted_contents)
+			encrypted_decoded=base64.b64decode(contents)
 			iv=encrypted_decoded[:AES.block_size]
 			decryptor=AES.new(key,AES.MODE_CBC, iv)
 			plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
 			
 			last_character = plain_text[len(plain_text) - 1:]
 			original_contents= plain_text[:-ord(last_character)]
+			response = {
+				'status': 200,
+				'did': did,
+				'message': 'Document Successfully checked out'
+				'contents': original_contents,
+				'session_token': session_token,
+			}
 		if flag=='2':
 			keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
 			h = SHA256.new(contents)
 			try:
 				pkcs1_15.new(keyPub).verify(h, signature)
 				print "The signature is valid."
+				response = {
+					'status': 200,
+					'did': did,
+					'message': 'Document Successfully checked out'
+					'contents': contents,
+					'session_token': session_token,
+				}
 			except (ValueError, TypeError):
 				print "The signature is not valid."
-		response = {}
+				response = {
+					'status': 703,
+					'message': 'Check out failed due to broken integrity'
+					'session_token': session_token,
+				}
+			
 		return jsonify(response)
         '''
 		Expected response status codes
