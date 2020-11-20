@@ -282,6 +282,7 @@ class checkout(Resource):
 		if flag==2:
 			keyPub = RSA.import_key(open('../certs/secure-shared-store.pub').read())
 			h = SHA256.new(contents)
+			signature=open("documents/signed-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
 			try:
 				pkcs1_15.new(keyPub).verify(h, signature)
 				print "The signature is valid."
