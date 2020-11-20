@@ -80,6 +80,7 @@ def search_session(conn,session_token):
 	if cur.fetchone() is not None:
 		result=cur.fetchone() # Took awaay [0]
 	conn.commit()
+	print result
 	return result
 
 
