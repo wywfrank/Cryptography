@@ -80,8 +80,7 @@ def search_session(conn,session_token):
 	cur.execute(sql,session_token)
 	result = None
 	conn.commit()
-	result=cur.fetchone() # Took awaay [0]
-	print result
+	result=cur.fetchone()[0] # Took awaay [0]
 	return result
 
 
