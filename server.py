@@ -52,7 +52,7 @@ def search_owner(conn,param):
 		'''
 	cur=conn.cursor()
 	cur.execute(sql,param)
-	result = None
+	result is None
 	if cur.fetchone() is not None:
 		result=cur.fetchone()[0]
 	conn.commit()
@@ -77,9 +77,11 @@ def search_session(conn,session_token):
 	print "session token: "
 	print session_token
 	cur.execute(sql,session_token)
-	result = None
+	result=cur.fetchone()
+	if result is not None:
+		result=result[0]
 	conn.commit()
-	result=cur.fetchone()[0] # Took awaay [0]
+	print result
 	return result
 
 
