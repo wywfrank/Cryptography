@@ -148,7 +148,7 @@ class checkin(Resource):
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
 				cipher = PKCS1_OAEP.new(keyPri)
 				key = cipher.decrypt(encrypted_key)
-				encrypted_decoded=base64.b64decode(contents)
+				encrypted_decoded=base64.b64decode(encrypted_contents)
 				iv=encrypted_decoded[:AES.block_size]
 				decryptor=AES.new(key,AES.MODE_CBC, iv)
 				plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
