@@ -17,6 +17,7 @@ import os
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 import random
+import datetime
 
 
 secure_shared_service = Flask(__name__)
@@ -81,6 +82,19 @@ def search_session(conn,session_token):
 		result=result[0]
 	conn.commit()
 	return result
+
+
+def insert_grant(conn,body):
+	sql='''DELETE FROM GRANT
+		WHERE expire_date > ?'''
+	cur=conn.cursor()
+	cur.execute(sql,(datetime.datetime.now(),))
+	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date)
+		VALUES(?,?,?,?)'''
+	cur.execute(sql,(body["did"],body["userId"],body["accessRight"],body["expire_date"]))
+	conn.commit()
+	return 
+
 
 
 class welcome(Resource):
@@ -326,6 +340,14 @@ class grant(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement grant functionality
+		conn=create_connection(db)
+		body=json.loads(data)
+		insert_grant(conn,body)
+		response={
+			'status': 200,
+			'message': 'Successfully granted access',
+			'session_token': session_token,
+		}
 		return jsonify(response)
 	'''
 		Expected response status codes:
@@ -333,6 +355,7 @@ class grant(Resource):
 		2) 702 - Access denied to grant access
 		3) 700 - Other failures
 	'''
+
 
 class delete(Resource):
 	def post(self):
