@@ -123,7 +123,7 @@ def grant():
 	accessRight=raw_input("Type of acess to be granted (1 - checkin, 2 - checkout, 3 - both:")
 	expire_date=raw_input("Time duration (in seconds) for access:")
 
-	a = datetime.now()
+	a = datetime.datetime.now()
 	print a
 	formatted_a=a.strftime("%d/%m/%Y %H:%M:%S")
 	print formatted_a
