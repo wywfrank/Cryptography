@@ -87,7 +87,7 @@ def search_session(conn,session_token):
 def insert_grant(conn,body):
 	print "Inserting into GRANT"
 	sql='''DELETE FROM GRANT
-		WHERE expire_date > ?'''
+		WHERE CAST(strftime('%s', expire_date) AS  integer)  < CAST(strftime('%s', ?)  AS  integer) '''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
 	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date)
@@ -446,7 +446,7 @@ def main():
 		(did text NOT NULL,
 		userId text NOT NULL,
 		accessRight integer NOT NULL,
-		expire_date timestamp NOT NULL);
+		expire_date datetime NOT NULL);
 	'''
 	sql_create_SESSION_table = '''
 		CREATE TABLE IF NOT EXISTS SESSION 
