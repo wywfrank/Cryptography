@@ -128,7 +128,6 @@ def grant():
 	formatted_a=a.strftime("%d/%m/%Y %H:%M:%S")
 	print formatted_a
 	expire_date = a + datetime.timedelta(seconds=int(expire_date)) # days, seconds, then other fields.
-	expire_date=expire_date.time()
 	print expire_date
 	return
 
