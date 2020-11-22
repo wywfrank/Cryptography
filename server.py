@@ -92,6 +92,7 @@ def insert_grant(conn,body):
 	cur.execute(sql,(datetime.datetime.now(),))
 	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date)
 		VALUES(?,?,?,?)'''
+	body["expire_date"]=expire_date = datetime.datetime.now() + datetime.timedelta(seconds=int(body["expire_date"]))
 	cur.execute(sql,(body["did"],body["userId"],body["accessRight"],body["expire_date"]))
 	conn.commit()
 	return 
