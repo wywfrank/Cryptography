@@ -345,6 +345,23 @@ class grant(Resource):
 		# TODO: Implement grant functionality
 		conn=create_connection(db)
 		body=json.loads(data)
+		session_token=body("session_token")
+
+		userId=search_session(conn,(session_token,))
+		if userId is None:
+			response= {
+				'status': 700,
+				'message': 'Unable to find session Id',
+				'session_token': session_token,
+			}
+			print response
+			return jsonify(response)
+		userId=str(userId)
+
+		ownerId=search_owner(conn,(userId,))
+
+		print ownerId,userId
+
 		insert_grant(conn,body)
 		response={
 			'status': 200,
