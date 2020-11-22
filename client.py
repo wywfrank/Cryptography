@@ -123,12 +123,17 @@ def grant():
 	accessRight=raw_input("Type of acess to be granted (1 - checkin, 2 - checkout, 3 - both:")
 	expire_date=raw_input("Time duration (in seconds) for access:")
 
-	a = datetime.datetime.now()
-	print a
-	formatted_a=a.strftime("%d/%m/%Y %H:%M:%S")
-	print formatted_a
-	expire_date = a + datetime.timedelta(seconds=int(expire_date)) # days, seconds, then other fields.
-	print expire_date
+	expire_date = datetime.datetime.now() + datetime.timedelta(seconds=int(expire_date)) # days, seconds, then other fields.
+	data={
+		'did':did,
+		'session_token':json.load(open(gt_username,"r"))["session_token"],
+		'accessRight':accessRight,
+		'userId':userId,
+		'expire_date':expire_date,
+	}
+	body=json.dumps(data)	
+	post_request(server_name,'grant',body,'certs/node1CA.crt','certs/node1CA.key')
+	
 	return
 
 def delete():
