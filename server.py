@@ -345,7 +345,7 @@ class grant(Resource):
 		# TODO: Implement grant functionality
 		conn=create_connection(db)
 		body=json.loads(data)
-		session_token=body("session_token")
+		session_token=str(body["session_token"])
 
 		userId=search_session(conn,(session_token,))
 		if userId is None:
