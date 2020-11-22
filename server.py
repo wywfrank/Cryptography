@@ -85,6 +85,7 @@ def search_session(conn,session_token):
 
 
 def insert_grant(conn,body):
+	print "Inserting into GRANT"
 	sql='''DELETE FROM GRANT
 		WHERE expire_date > ?'''
 	cur=conn.cursor()
