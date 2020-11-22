@@ -123,7 +123,6 @@ def grant():
 	accessRight=raw_input("Type of acess to be granted (1 - checkin, 2 - checkout, 3 - both:")
 	expire_date=raw_input("Time duration (in seconds) for access:")
 
-	expire_date = datetime.datetime.now() + datetime.timedelta(seconds=int(expire_date)) # days, seconds, then other fields.
 	data={
 		'did':did,
 		'session_token':json.load(open(gt_username,"r"))["session_token"],
