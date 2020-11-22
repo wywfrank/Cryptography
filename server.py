@@ -338,6 +338,7 @@ class checkout(Resource):
 
 class grant(Resource):
 	def post(self):
+		print "Granting access!!!"
 		data = request.get_json()
 		# TODO: Implement grant functionality
 		conn=create_connection(db)
