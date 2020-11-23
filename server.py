@@ -368,7 +368,7 @@ class grant(Resource):
 			}
 			print response
 			return jsonify(response)
-
+		ownerId=ownerId[0]
 		print "Owner and User ID: " 
 		print ownerId
 		print userId
