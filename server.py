@@ -85,9 +85,8 @@ def search_session(conn,session_token):
 
 
 def insert_grant(conn,body):
-	print "Inserting into GRANT"
 	sql='''DELETE FROM GRANT
-		WHERE CAST(strftime('%s', expire_date) AS  integer)  < CAST(strftime('%s', ?)  AS  integer) '''
+		WHERE CAST(strftime('%s', expire_date) AS integer) < CAST(strftime('%s', ?) AS integer) '''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
 	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date)
@@ -97,6 +96,18 @@ def insert_grant(conn,body):
 	conn.commit()
 	return 
 
+def search_grant(conn,body,accessRight):
+	sql='''DELETE FROM GRANT
+		WHERE CAST(strftime('%s', expire_date) AS integer)<CAST(strftime('%s', ?) AS integer)'''
+	cur=conn.cursor()
+	cur.execute(sql,(datetime.datetime.now(),))
+	sql='''Select userId from GRANT where did=? and userId =? and accessRight=?'''
+	cur.execute(sql,(body["did"],body["userId"],accessRight))
+	result=cur.fetchone()
+	if result is not None:
+		result=result[0]
+	conn.commit()
+	return result
 
 
 class welcome(Resource):
@@ -140,7 +151,11 @@ class checkin(Resource):
 			ownerId=ownerId[0]
 		contents=str(body["contents"]) 
 		encrypted_key = ''
-		if ownerId == userId: #must be owner or authorized(need to implement AUTH)
+
+		grantId=search_grant(conn,body,1)
+		print "grantId"+grantId
+
+		if ownerId == userId or grantId is not None: #must be owner or authorized(need to implement AUTH)
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
