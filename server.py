@@ -340,7 +340,6 @@ class checkout(Resource):
 
 class grant(Resource):
 	def post(self):
-		print "Granting access!!!"
 		data = request.get_json()
 		# TODO: Implement grant functionality
 		conn=create_connection(db)
@@ -359,7 +358,9 @@ class grant(Resource):
 			return jsonify(response)
 
 		userId=str(userId)
-		ownerId=search_owner(conn,(userId,))
+		ownerId=search_owner(conn,(str(body["did"]),))
+		print "Owner:"
+		print ownerId
 		if ownerId is None:
 			response= {
 				'status': 700,
@@ -369,8 +370,7 @@ class grant(Resource):
 			print response
 			return jsonify(response)
 		ownerId=ownerId[0]
-		print "Owner and User ID: " 
-		print ownerId
+		print "User ID: " 
 		print userId
 
 		if ownerId != userId:
