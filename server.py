@@ -96,13 +96,13 @@ def insert_grant(conn,body):
 	conn.commit()
 	return 
 
-def search_grant(conn,body,accessRight):
+def search_grant(conn,body,userId,accessRight):
 	sql='''DELETE FROM GRANT
 		WHERE CAST(strftime('%s', expire_date) AS integer)<CAST(strftime('%s', ?) AS integer)'''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
 	sql='''Select userId from GRANT where did=? and userId =? and accessRight=?'''
-	cur.execute(sql,(body["did"],body["userId"],accessRight))
+	cur.execute(sql,(body["did"],userId,accessRight))
 	result=cur.fetchone()
 	if result is not None:
 		result=result[0]
@@ -152,7 +152,7 @@ class checkin(Resource):
 		contents=str(body["contents"]) 
 		encrypted_key = ''
 
-		grantId=search_grant(conn,body,1)
+		grantId=search_grant(conn,body,userId,1)
 		print "grantId"+grantId
 
 		if ownerId == userId or grantId is not None: #must be owner or authorized(need to implement AUTH)
