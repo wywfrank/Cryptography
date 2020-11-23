@@ -346,8 +346,9 @@ class grant(Resource):
 		conn=create_connection(db)
 		body=json.loads(data)
 		session_token=str(body["session_token"])
-
+		
 		userId=search_session(conn,(session_token,))
+
 		if userId is None:
 			response= {
 				'status': 700,
@@ -356,11 +357,28 @@ class grant(Resource):
 			}
 			print response
 			return jsonify(response)
+
 		userId=str(userId)
-
 		ownerId=search_owner(conn,(userId,))
+		if ownerId is None:
+			response= {
+				'status': 700,
+				'message': 'Unable to find document or owner',
+				'session_token': session_token,
+			}
+			print response
+			return jsonify(response)
 
-		print ownerId,userId
+		print "Owner and User ID: " ownerId,userId
+
+		if ownerId != userId:
+			response= {
+				'status': 702,
+				'message': 'Access denied to grant access',
+				'session_token': session_token,
+			}
+			print response
+			return jsonify(response)
 
 		insert_grant(conn,body)
 		response={
