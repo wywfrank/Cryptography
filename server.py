@@ -369,7 +369,9 @@ class grant(Resource):
 			print response
 			return jsonify(response)
 
-		print "Owner and User ID: " ownerId+userId
+		print "Owner and User ID: " 
+		print ownerId
+		print userId
 
 		if ownerId != userId:
 			response= {
