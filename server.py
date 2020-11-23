@@ -273,7 +273,7 @@ class checkout(Resource):
 		else:
 			response = {
 				'status': 700 ,
-				'message': 'Other failures,
+				'message': 'Other failures',
 				'session_token': session_token,
 			}
 			return jsonify(response)
