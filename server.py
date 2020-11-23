@@ -101,7 +101,7 @@ def search_grant(conn,body,userId,accessRight):
 		WHERE CAST(strftime('%s', expire_date) AS integer)<CAST(strftime('%s', ?) AS integer)'''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
-	sql='''Select userId from GRANT where did=? and userId =? and accessRight=?'''
+	sql='''Select userId from GRANT where did=? and userId =? and accessRight!=?'''
 	cur.execute(sql,(body["did"],userId,accessRight))
 	result=cur.fetchone()
 	if result is not None:
@@ -152,8 +152,7 @@ class checkin(Resource):
 		contents=str(body["contents"]) 
 		encrypted_key = ''
 
-		grantId=search_grant(conn,body,userId,1)
-		print "grantId"+grantId
+		grantId=search_grant(conn,body,userId,2)
 
 		if ownerId == userId or grantId is not None: #must be owner or authorized(need to implement AUTH)
 			if body["flag"]=='1':
@@ -271,7 +270,13 @@ class checkout(Resource):
 		flag=''
 		if ownerId is not None:
 			ownerId,flag=ownerId[0],ownerId[1]
-		#authId=search_auth(conn,(body["did"],"1"))
+		else:
+			response = {
+				'status': 700 ,
+				'message': 'Other failures,
+				'session_token': session_token,
+			}
+			return jsonify(response)
 
 		session_token=str(body["session_token"])
 		userId=search_session(conn,(session_token,))
@@ -284,8 +289,10 @@ class checkout(Resource):
 				'session_token': session_token,
 			}
 			return jsonify(response)
+		
+		grantId=search_grant(conn,body,userId,1)
 
-		if ownerId != userId: #and authId !=userId
+		if ownerId != userId and grantId is None:
 			response = {
 				'status': 702 ,
 				'message': 'Access denied to check out',
