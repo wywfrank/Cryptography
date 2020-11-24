@@ -46,10 +46,16 @@ def login():
 		post_request function given.
 		The request body should contain the user-id, statement and signed statement.
 	'''
-	userId=raw_input("Enter user Id here (1): ")
-	keyName=raw_input("Enter name of private key (user1): ")
-	statement="client1 as user"+userId+" logs into the server"
-	key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
+	success=''
+	while success!=1:
+		userId=raw_input("Enter user Id here (1): ")
+		keyName=raw_input("Enter name of private key (user1): ")
+		statement="client1 as user"+userId+" logs into the server"
+		try:
+			key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
+			success=1
+		except IOError:
+			Print "File name of key does not exist. Try again"
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(SHA256.new(statement)))).decode('utf-8')
 	key=''
 	data={
