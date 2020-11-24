@@ -166,9 +166,8 @@ def main():
 		if option=='2': checkout()
 		if option=='3': grant()
 
-		if (json.load(open(gt_username,"r")))["status"]==200:
-			message=(json.load(open(gt_username,"r")))["message"]
-			print "Error: "+str(message)
+		if (json.load(open(gt_username,"r")))["status"]!=200:
+			print "Error: "+(json.load(open(gt_username,"r")))["message"]
 			
 
 	
