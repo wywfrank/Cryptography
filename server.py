@@ -440,9 +440,11 @@ class delete(Resource):
 		WHERE did = ?'''
 		cur=conn.cursor()
 		cur.execute(sql,(str(body["did"]),))
+		conn.commit()
 		sql='''DELETE FROM GRANT
 		WHERE did = ?'''
 		cur.execute(sql,(str(body["did"]),))
+		conn.commit()
 		conn.close()
 
 		if os.path.exists("documents/"+body["did"]): 
@@ -494,8 +496,8 @@ class logout(Resource):
 		WHERE userId= ?'''
 		cur=conn.cursor()
 		cur.execute(sql,(str(userId),))
+		conn.commit()
 		conn.close()
-		print 'should be deleted in db now'
 		response= {
 				'status': 200,
 				'message': 'Successfully logged out',
