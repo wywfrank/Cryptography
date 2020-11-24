@@ -80,7 +80,7 @@ def checkin():
 	flag=raw_input("Enter security flag (1-confidentiality, 2-integrity):")
 	try:
 		fin = open('documents/checkin/'+did, 'r')
-	else IOError:
+	except IOError:
 		print "Document does not exist on client side."
 		return
 	data={
