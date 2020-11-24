@@ -160,7 +160,7 @@ def logout():
 def main():
 	
 	option=''
-	while option='':
+	while option=='':
 		login()
 		if (json.load(open(gt_username,"r")))["status"]==200:
 			option=0
