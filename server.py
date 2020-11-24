@@ -153,9 +153,6 @@ class checkin(Resource):
 		encrypted_key = ''
 
 		grantId=search_grant(conn,body,userId,1)
-
-		print "grantId"+grantId
-
 		if ownerId == userId or grantId is not None or grantId[0]==1:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
@@ -284,7 +281,6 @@ class checkout(Resource):
 			return jsonify(response)
 		
 		grantId=search_grant(conn,body,userId,2)
-		print "grantId"+grantId
 
 		if ownerId != userId and (grantId is None or grantId[0]==2):
 			response = {
