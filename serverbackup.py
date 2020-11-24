@@ -385,12 +385,7 @@ class grant(Resource):
 			print response
 			return jsonify(response)
 
-		insert_grant(conn,body)
-		response={
-			'status': 200,
-			'message': 'Successfully granted access',
-			'session_token': session_token,
-		}
+		delete 
 		return jsonify(response)
 	'''
 		Expected response status codes:
