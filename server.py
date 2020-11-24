@@ -478,6 +478,27 @@ class logout(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement logout functionality
+		conn=create_connection(db)
+		body=json.loads(data)
+		session_token=str(body["session_token"])
+		userId=search_session(conn,(session_token,))
+		if userId is None:
+			response= {
+				'status': 700,
+				'message': 'Failed to log out',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+
+		sql='''DELETE FROM SESSION
+		WHERE userId= ?'''
+		cur=conn.cursor()
+		cur.execute(sql,(str(userId),))
+		conn.close()
+		response= {
+				'status': 200,
+				'message': 'Successfully logged out',
+			}
 		return jsonify(response)
 	'''
 		Expected response status codes:
@@ -501,9 +522,6 @@ def create_connection(db_file):
 	except Error as e:
 		print e
 	return conn
-	# finally:
-	# 	if conn:
-	# 		conn.close()
 
 def create_table(conn, create_table_sql):
     """ create a table from the create_table_sql statement

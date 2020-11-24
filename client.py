@@ -165,6 +165,12 @@ def logout():
 		Send request to server with required parameters (action = 'logout') using post_request()
 		The request body should contain the user-id, session-token
 	'''
+	data={
+		'session_token':json.load(open(gt_username,"r"))["session_token"],
+	}
+	body=json.dumps(data)	
+	post_request(server_name,'logout',body,'certs/node1CA.crt','certs/node1CA.key')
+	
 	exit() #exit the program
 
 def main():
@@ -190,12 +196,9 @@ def main():
 		if option=='3': grant()
 		if option=='4': delete()
 		if option=='5': logout()
-
-
 		if (json.load(open(gt_username,"r")))["status"]!=200:
 			print "Error: "+(json.load(open(gt_username,"r")))["message"]
-			
-
+	exit()
 	
 	'''
 		# TODO: Authenticate the user by calling login.
