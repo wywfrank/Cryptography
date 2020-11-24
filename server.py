@@ -79,16 +79,10 @@ def insert_grant(conn,body):
 	cur.execute(sql,(datetime.datetime.now(),))
 	conn.commit()
 
-	sql='''DELETE FROM GRANT
-		WHERE did=? and userId=?'''
-	cur=conn.cursor()
-	cur.execute(sql,(body["did"],body["userId"]))
-	conn.commit()
-
-	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date)
-		VALUES(?,?,?,?)'''
-	body["expire_date"]=expire_date = datetime.datetime.now() + datetime.timedelta(seconds=int(body["expire_date"]))
-	cur.execute(sql,(body["did"],body["userId"],body["accessRight"],body["expire_date"]))
+	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date,created_date)
+		VALUES(?,?,?,?,?)'''
+	expire_date = datetime.datetime.now() + datetime.timedelta(seconds=int(body["expire_date"]))
+	cur.execute(sql,(body["did"],body["userId"],body["accessRight"],expire_date,datetime.datetime.now()))
 	conn.commit()
 	return 
 
@@ -99,7 +93,8 @@ def search_grant(conn,body,userId,accessRight):
 	cur.execute(sql,(datetime.datetime.now(),))
 	conn.commit()
 
-	sql='''Select userId from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) '''
+	sql='''Select userId from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) 
+		order by created_date,userId desc'''
 	cur.execute(sql,(body["did"],userId,accessRight))
 	conn.commit()
 	result=cur.fetchone()
@@ -560,7 +555,8 @@ def main():
 		(did text NOT NULL,
 		userId text NOT NULL,
 		accessRight integer NOT NULL,
-		expire_date datetime NOT NULL);
+		expire_date datetime NOT NULL,
+		created_date datetime NOT NULL);
 	'''
 	sql_create_SESSION_table = '''
 		CREATE TABLE IF NOT EXISTS SESSION 
