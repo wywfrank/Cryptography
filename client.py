@@ -6,6 +6,7 @@ from Crypto.PublicKey import RSA
 import json
 import base64
 import datetime
+import os
 
 
 gt_username = 'ywan33'   # TODO: Replace with your gt username within quotes
@@ -81,8 +82,16 @@ def checkin():
 	try:
 		fin = open('documents/checkin/'+did, 'r')
 	except IOError:
-		print "Document does not exist on client side."
-		return
+		try:
+			fin = open('documents/checkout/'+did, 'r')
+			f = open("documents/checkoin/"+did,"w")
+			f.write(fin.read())
+			f.close()
+			os.remove("documents/checkout/"+did) 
+		except IOError:
+			print "Document does not exist on client side."
+			return
+
 	data={
 		'did':did,
 		'flag':flag,
