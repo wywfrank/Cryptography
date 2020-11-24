@@ -223,17 +223,31 @@ class login(Resource):
 		# 	Response format for success and failure are given below. The same
 		# 	keys ('status', 'message', 'session_token') should be used.
 		keyaddr="userpublickeys/user"+body["userId"]+".pub"
-		key = RSA.importKey(open(keyaddr,'r'))
+		try:
+			key = RSA.importKey(open(keyaddr,'r'))
+		except IOError:
+			response = {
+				'status': 700,
+				'message': 'Key does not exist on server.',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+		
 		h = SHA256.new(str(statement))
 		signature=base64.standard_b64decode((body["signature"]).encode("utf-8"))
+
 		success=1
 		#must ensure user ID unique!!!
 		try:
 			pkcs1_15.new(key).verify(h, signature)
 			print "The signature is valid."
 		except (ValueError, TypeError):
-			print "The signature is not valid."
-			success=0
+			response = {
+				'status': 700,
+				'message': 'Key does not match.',
+				'session_token': session_token,
+			}
+			return jsonify(response)
 		
 		if success:
 			session_token = uuid4() # TODO: Generate session token
