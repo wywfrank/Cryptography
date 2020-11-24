@@ -1,6 +1,5 @@
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
-# TODO: import additional modules as required
+import datetime
+import random
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
@@ -12,8 +11,9 @@ from uuid import uuid4
 import sqlite3
 from sqlite3 import Error
 import os
-import random
-import datetime
+# TODO: import additional modules as required
+from flask import Flask, request, jsonify
+from flask_restful import Resource, Api
 
 
 secure_shared_service = Flask(__name__)
