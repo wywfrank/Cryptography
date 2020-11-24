@@ -52,6 +52,7 @@ def login():
 		userId=raw_input("Enter user Id here (1): ")
 		try:
 			userId=int(userId)
+			userId=str(userId)
 		except:
 			exit()
 		keyName=raw_input("Enter name of private key (user1): ")
