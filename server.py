@@ -6,7 +6,6 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from Crypto.Cipher import PKCS1_OAEP
-from Crypto import Random
 import json
 import base64 
 from uuid import uuid4
@@ -217,7 +216,6 @@ class login(Resource):
 			response = {
 				'status': 700,
 				'message': 'Key does not exist on server.',
-				'session_token': session_token,
 			}
 			return jsonify(response)
 		
@@ -254,6 +252,7 @@ class checkout(Resource):
 		conn=create_connection(db)
 		body=json.loads(data)
 		ownerId=search_owner(conn,(body["did"],))
+		session_token=str(body["session_token"])
 		flag=''
 		if ownerId is not None:
 			ownerId,flag=ownerId[0],ownerId[1]
@@ -265,7 +264,6 @@ class checkout(Resource):
 			}
 			return jsonify(response) 
 
-		session_token=str(body["session_token"])
 		userId=search_session(conn,(session_token,))
 		response=''
 
