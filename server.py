@@ -38,17 +38,6 @@ def insert_owner(conn,row):
 	return 
 
 
-def search_did(conn,param):
-	sql='''SELECT did FROM OWNER WHERE did=? and flag=?
-		'''
-	cur=conn.cursor()
-	cur.execute(sql,param)
-	result=cur.fetchone()
-	if result is not None:
-		result=result[0]
-	conn.commit()
-	return result
-
 def search_owner(conn,param):
 	sql='''SELECT userId,flag FROM OWNER WHERE did=?
 		'''
@@ -141,27 +130,25 @@ class checkin(Resource):
 			print response
 			return jsonify(response)
 		
-		did=search_did(conn,(body["did"],body["flag"]))
-		if did is None: #create new did entry if did+flag doesn't exist
+		did=search_owner(conn,(body["did"],))
+		if did is None: #create new did entry if did doesn't exist
 			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
-
-		ownerId=search_owner(conn,(body["did"],))
-		if ownerId is not None:
-			ownerId=ownerId[0]
-		else:
+		
+		if did[1]!=body["flag"]:
 			response= {
 				'status': 700,
-				'message': 'Bad Flag number',
+				'message': 'Cannot check in same document with different flag',
 				'session_token': session_token,
 			}
 			print response
 			return jsonify(response)
+
+		ownerId=did[0]
 		contents=str(body["contents"]) 
 		encrypted_key = ''
 
 		grantId=search_grant(conn,body,userId,1)
-
 		if ownerId == userId or grantId is not None: #must be owner or authorized(need to implement AUTH)
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
@@ -176,7 +163,6 @@ class checkin(Resource):
 				keyPub=RSA.importKey(open('../certs/secure-shared-store.pub').read())
 				cipher=PKCS1_OAEP.new(keyPub)
 				encrypted_key=cipher.encrypt(key)
-				
 				f = open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"w")
 				f.write(encrypted_key)
 				f.close()
@@ -284,7 +270,7 @@ class checkout(Resource):
 				'message': 'Other failures',
 				'session_token': session_token,
 			}
-			return jsonify(response)
+			return jsonify(response) 
 
 		session_token=str(body["session_token"])
 		userId=search_session(conn,(session_token,))
