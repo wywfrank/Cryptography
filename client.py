@@ -154,7 +154,7 @@ def logout():
 def main():
 	login()
 	option=''
-	while (option != '5' and (json.load(open(gt_username,"r")))["status"]==200):
+	while (option != '5'):
 		option=raw_input('''Enter the option's number: 
 				1. Checkin
 				2. Checkout
@@ -165,6 +165,8 @@ def main():
 		if option=='1': checkin()
 		if option=='2': checkout()
 		if option=='3': grant()
+		if (json.load(open(gt_username,"r")))["status"]==200:
+			print "Error: "+(json.load(open(gt_username,"r")))["message"]
 
 	
 	'''

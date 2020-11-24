@@ -101,7 +101,7 @@ def search_grant(conn,body,userId,accessRight):
 		WHERE CAST(strftime('%s', expire_date) AS integer)<CAST(strftime('%s', ?) AS integer)'''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
-	sql='''Select userId from GRANT where did=? and userId =? and accessRight!=?'''
+	sql='''Select userId from GRANT where did=? and (user=0 or userId =?) and accessRight!=? sort by userId'''
 	cur.execute(sql,(body["did"],userId,accessRight))
 	result=cur.fetchone()
 	if result is not None:
@@ -149,6 +149,14 @@ class checkin(Resource):
 		ownerId=search_owner(conn,(body["did"],))
 		if ownerId is not None:
 			ownerId=ownerId[0]
+		else:
+			response= {
+				'status': 700,
+				'message': 'Bad Flag number',
+				'session_token': session_token,
+			}
+			print response
+			return jsonify(response)
 		contents=str(body["contents"]) 
 		encrypted_key = ''
 
