@@ -59,8 +59,6 @@ def search_session(conn,session_token):
 	sql='''SELECT userId FROM SESSION WHERE session_token=?
 		'''
 	cur=conn.cursor()
-	print "session token: "
-	print session_token
 	cur.execute(sql,session_token)
 	result=cur.fetchone()
 	if result is not None:
@@ -89,9 +87,9 @@ def search_grant(conn,body,userId,accessRight):
 	cur.execute(sql,(datetime.datetime.now(),))
 	conn.commit()
 
-	sql='''Select accessRight from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) 
+	sql='''Select accessRight from GRANT where (userId=0 or userId =?) and (accessRight=3 or accessRight=?) and did=?  
 		order by created_date desc'''
-	cur.execute(sql,(body["did"],userId,accessRight))
+	cur.execute(sql,(userId,accessRight,body["did"]))
 	conn.commit()
 	result=cur.fetchone()
 	if result is not None:
@@ -225,7 +223,6 @@ class login(Resource):
 		#must ensure user ID unique!!!
 		try:
 			pkcs1_15.new(key).verify(h, signature)
-			print "The signature is valid."
 		except (ValueError, TypeError):
 			response = {
 				'status': 700,
@@ -258,7 +255,7 @@ class checkout(Resource):
 			ownerId,flag=ownerId[0],ownerId[1]
 		else:
 			response = {
-				'status': 700 ,
+				'status': 700,
 				'message': 'Other failures',
 				'session_token': session_token,
 			}
@@ -273,26 +270,21 @@ class checkout(Resource):
 				'message': 'Check out failed since file not found on the server',
 				'session_token': session_token,
 			}
-			return jsonify(response)
-		
+		return jsonify(response)
 		grantId=search_grant(conn,body,userId,2)
-
 		if ownerId != userId and (grantId is None or str(grantId)=='2'):
 			response = {
-				'status': 702 ,
+				'status': 702,
 				'message': 'Access denied to check out',
 				'session_token': session_token,
 			}
 			return jsonify(response)
-		
 		contents=open('documents/'+body["did"]).read()
-		print "flag: "+str(flag)
 		response = {
 			'status': 700,
 			'message': 'Other failures',
 			'session_token': session_token,
 		}
-		print "contents: "+contents
 		if flag==1:
 			encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
 			keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
@@ -317,7 +309,6 @@ class checkout(Resource):
 			signature=open("documents/signed-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
 			try:
 				pkcs1_15.new(keyPub).verify(h, signature)
-				print "The signature is valid."
 				response = {
 					'status': 200,
 					'did': body["did"],
@@ -372,7 +363,6 @@ class grant(Resource):
 				'message': 'Unable to find document or owner',
 				'session_token': session_token,
 			}
-			print response
 			return jsonify(response)
 		ownerId=ownerId[0]
 		if ownerId != userId:
@@ -381,7 +371,6 @@ class grant(Resource):
 				'message': 'Access denied to grant access',
 				'session_token': session_token,
 			}
-			print response
 			return jsonify(response)
 
 		insert_grant(conn,body)
