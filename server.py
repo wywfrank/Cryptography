@@ -264,7 +264,7 @@ class checkout(Resource):
 		userId=search_session(conn,(session_token,))
 		response=''
 
-		if os.path.exists('documents/'+body["did"]):
+		if os.path.exists('documents/'+body["did"])==False:
 			response = {
 				'status': 704,
 				'message': 'Check out failed since file not found on the server',
