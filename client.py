@@ -82,7 +82,7 @@ def checkin():
 	if os.path.exists("documents/checkin/"+did): 
 		print "ioerror"
 		fin = open('documents/checkin/'+did, 'r')
-	else if os.path.exists("documents/checkout/"+did):
+	elif os.path.exists("documents/checkout/"+did):
 		print "ioerror 1"
 		fin = open('documents/checkout/'+did, 'r')
 		f = open("documents/checkin/"+did,"w")
