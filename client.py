@@ -50,8 +50,12 @@ def login():
 	success=''
 	while success!=1:
 		userId=raw_input("Enter user Id here (1): ")
+		try:
+			userId=int(userId)
+		except:
+			exit()
 		keyName=raw_input("Enter name of private key (user1): ")
-		statement="client1 as user"+userId+" logs into the server"
+		statement= str(os.path.basename(os.path.realpath(__file__)))"client1 as user"+userId+" logs into the server"
 		try:
 			key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 			success=1
@@ -137,9 +141,13 @@ def grant():
 
 	did=raw_input("Enter unique document name (1.txt):")
 	userId=raw_input("User ID to whom access should be granted (0 for all users):")
+	try:
+		userId=int(userId)
+	except:
+		exit()
 	accessRight=0
 	while int(accessRight)<1 or int(accessRight)>3:
-		accessRight=raw_input("Type of acesss to be granted (1 - checkin, 2 - checkout, 3 - both:")
+		accessRight=raw_input("Type of acesss to be granted (1 - checkin, 2 - checkout, 3 - both):")
 	expire_date=raw_input("Time duration (in seconds) for access:")
 	try:
 		expire_date=int(expire_date)
