@@ -82,12 +82,13 @@ def checkin():
 	try:
 		fin = open('documents/checkin/'+did, 'r')
 	except IOError:
-		print "ioerror 1"
 		try:
+			print "ioerror 1"
 			fin = open('documents/checkout/'+did, 'r')
 			f = open("documents/checkoin/"+did,"w")
 			f.write(fin.read())
 			f.close()
+			print "ioerror 1"
 			os.remove("documents/checkout/"+did) 
 		except IOError:
 			print "Document does not exist on client side."
