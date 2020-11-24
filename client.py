@@ -164,6 +164,8 @@ def main():
 		login()
 		if (json.load(open(gt_username,"r")))["status"]==200:
 			option=0
+		else:
+			print "Error: "+(json.load(open(gt_username,"r")))["message"]
 	
 	while (option != '5'):
 		option=raw_input('''Enter the option's number: 
