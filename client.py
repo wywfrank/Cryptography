@@ -55,7 +55,7 @@ def login():
 			key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 			success=1
 		except IOError:
-			Print "File name of key does not exist. Try again"
+			print "File name of key does not exist. Try again."
 	signature=(base64.b64encode(pkcs1_15.new(key).sign(SHA256.new(statement)))).decode('utf-8')
 	key=''
 	data={
