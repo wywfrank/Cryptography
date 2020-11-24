@@ -264,7 +264,7 @@ class checkout(Resource):
 		userId=search_session(conn,(session_token,))
 		response=''
 
-		if os.path.exists('documents/'+body["did"])==False:
+		if os.path.exists('documents/'+body["did"]):
 			response = {
 				'status': 704,
 				'message': 'Check out failed since file not found on the server',
@@ -325,14 +325,6 @@ class checkout(Resource):
 				}
 			
 		return jsonify(response)
-        '''
-		Expected response status codes
-		1) 200 - Document Successfully checked out
-		2) 702 - Access denied to check out
-		3) 703 - Check out failed due to broken integrity
-		4) 704 - Check out failed since file not found on the server
-		5) 700 - Other failures
-        '''
 
 
 
@@ -491,12 +483,6 @@ class logout(Resource):
 				'message': 'Successfully logged out',
 			}
 		return jsonify(response)
-	'''
-		Expected response status codes:
-		1) 200 - Successfully logged out
-		2) 700 - Failed to log out
-	'''
-
 api.add_resource(welcome, '/')
 api.add_resource(login, '/login')
 api.add_resource(checkin, '/checkin')
