@@ -101,7 +101,7 @@ def search_grant(conn,body,userId,accessRight):
 		WHERE CAST(strftime('%s', expire_date) AS integer)<CAST(strftime('%s', ?) AS integer)'''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
-	sql='''Select userId from GRANT where did=? and (userId=0 or userId =?) and accessRight!=? sort by userId'''
+	sql='''Select userId from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) '''
 	cur.execute(sql,(body["did"],userId,accessRight))
 	result=cur.fetchone()
 	if result is not None:
@@ -160,7 +160,7 @@ class checkin(Resource):
 		contents=str(body["contents"]) 
 		encrypted_key = ''
 
-		grantId=search_grant(conn,body,userId,2)
+		grantId=search_grant(conn,body,userId,1)
 
 		if ownerId == userId or grantId is not None: #must be owner or authorized(need to implement AUTH)
 			if body["flag"]=='1':
@@ -298,7 +298,7 @@ class checkout(Resource):
 			}
 			return jsonify(response)
 		
-		grantId=search_grant(conn,body,userId,1)
+		grantId=search_grant(conn,body,userId,2)
 
 		if ownerId != userId and grantId is None:
 			response = {
