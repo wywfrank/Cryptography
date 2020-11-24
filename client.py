@@ -117,7 +117,7 @@ def checkout():
 	body=json.dumps(data)	
 	post_request(server_name,'checkout',body,'certs/node1CA.crt','certs/node1CA.key')
 	
-	if json.load(open(gt_username,"r"))["status"]==700:
+	if json.load(open(gt_username,"r"))["status"]==200:
 		contents=json.load(open(gt_username,"r"))["contents"]
 		did=json.load(open(gt_username,"r"))["did"]
 		f=open("documents/checkout/"+did,"w")
