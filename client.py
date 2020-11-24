@@ -188,6 +188,9 @@ def main():
 		if option=='1': checkin()
 		if option=='2': checkout()
 		if option=='3': grant()
+		if option=='4': delete()
+		if option=='5': logout()
+
 
 		if (json.load(open(gt_username,"r")))["status"]!=200:
 			print "Error: "+(json.load(open(gt_username,"r")))["message"]
