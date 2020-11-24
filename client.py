@@ -57,6 +57,7 @@ def login():
 			exit()
 		keyName=raw_input("Enter name of private key (user1): ")
 		statement= str(os.path.basename(os.path.realpath(__file__)))+"client1 as user"+userId+" logs into the server"
+		print statement
 		try:
 			key=RSA.importKey(open('userkeys/'+keyName+'.key','r'))
 			success=1
