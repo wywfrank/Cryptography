@@ -495,6 +495,7 @@ class logout(Resource):
 		cur=conn.cursor()
 		cur.execute(sql,(str(userId),))
 		conn.close()
+		print 'should be deleted in db now'
 		response= {
 				'status': 200,
 				'message': 'Successfully logged out',
