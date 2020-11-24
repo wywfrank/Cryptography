@@ -244,7 +244,6 @@ class login(Resource):
 			response = {
 				'status': 700,
 				'message': 'Key does not match.',
-				'session_token': session_token,
 			}
 			return jsonify(response)
 		
