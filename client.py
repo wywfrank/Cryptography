@@ -82,6 +82,7 @@ def checkin():
 	try:
 		fin = open('documents/checkin/'+did, 'r')
 	except IOError:
+		print "ioerror 1"
 		try:
 			fin = open('documents/checkout/'+did, 'r')
 			f = open("documents/checkoin/"+did,"w")
