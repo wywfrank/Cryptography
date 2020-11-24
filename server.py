@@ -93,8 +93,8 @@ def search_grant(conn,body,userId,accessRight):
 	cur.execute(sql,(datetime.datetime.now(),))
 	conn.commit()
 
-	sql='''Select userId from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) 
-		order by created_date,userId desc'''
+	sql='''Select accessRight from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) 
+		order by created_date desc'''
 	cur.execute(sql,(body["did"],userId,accessRight))
 	conn.commit()
 	result=cur.fetchone()
@@ -153,7 +153,10 @@ class checkin(Resource):
 		encrypted_key = ''
 
 		grantId=search_grant(conn,body,userId,1)
-		if ownerId == userId or grantId is not None:
+
+		print "grantId"+grantId
+
+		if ownerId == userId or grantId is not None or grantId[0]==1:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
@@ -281,8 +284,9 @@ class checkout(Resource):
 			return jsonify(response)
 		
 		grantId=search_grant(conn,body,userId,2)
+		print "grantId"+grantId
 
-		if ownerId != userId and grantId is None:
+		if ownerId != userId and (grantId is None or grantId[0]==2):
 			response = {
 				'status': 702 ,
 				'message': 'Access denied to check out',
