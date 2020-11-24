@@ -150,6 +150,12 @@ def delete():
 		Send request to server with required parameters (action = 'delete')
 		using post_request().
 	'''
+	data={
+		'did':did,
+		'session_token':json.load(open(gt_username,"r"))["session_token"],
+	}
+	body=json.dumps(data)	
+	post_request(server_name,'delete',body,'certs/node1CA.crt','certs/node1CA.key')
 	return
 
 def logout():

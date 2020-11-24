@@ -367,8 +367,6 @@ class grant(Resource):
 
 		userId=str(userId)
 		ownerId=search_owner(conn,(str(body["did"]),))
-		print "Owner:"
-		print ownerId
 		if ownerId is None:
 			response= {
 				'status': 700,
@@ -378,9 +376,6 @@ class grant(Resource):
 			print response
 			return jsonify(response)
 		ownerId=ownerId[0]
-		print "User ID: " 
-		print userId
-
 		if ownerId != userId:
 			response= {
 				'status': 702,
@@ -390,12 +385,7 @@ class grant(Resource):
 			print response
 			return jsonify(response)
 
-		insert_grant(conn,body)
-		response={
-			'status': 200,
-			'message': 'Successfully granted access',
-			'session_token': session_token,
-		}
+		delete 
 		return jsonify(response)
 	'''
 		Expected response status codes:
@@ -409,6 +399,67 @@ class delete(Resource):
 	def post(self):
 		data = request.get_json()
 		# TODO: Implement delete functionality
+		body=json.loads(data)
+		session_token=str(body["session_token"])
+		
+		userId=search_session(conn,(session_token,))
+		if userId is None:
+			response= {
+				'status': 700,
+				'message': 'Unable to find session Id',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+
+		userId=str(userId)
+		ownerId=search_owner(conn,(str(body["did"]),))
+		if ownerId is None:
+			response= {
+				'status': 700,
+				'message': 'Delete failed since file not found on the server',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+		ownerId=ownerId[0]
+
+		if ownerId != userId:
+			response= {
+				'status': 702,
+				'message': 'Access denied to delete file',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+		
+		sql='''DELETE FROM OWNER
+		WHERE did = ?'''
+		conn=create_connection(db)
+		cur=conn.cursor()
+		cur.execute(sql,(str(body["did"]),))
+		sql='''DELETE FROM GRANT
+		WHERE did = ?'''
+		cur.execute(sql,(str(body["did"]),))
+		conn.close()
+		
+		if os.path.exists("documents/"+body["did"]): 
+			os.remove("documents/"+body["did"]) 
+		else:
+			response= {
+				'status': 704,
+				'message': 'Delete failed since file not found on the server',
+				'session_token': session_token,
+			}
+			return jsonify(response)
+
+		if os.path.exists("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]):
+			os.remove("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1])
+		if os.path.exists("documents/signed-"+body["did"].split('.')[0]+body["did"].split('.')[1]):
+			os.remove("documents/signed-"+body["did"].split('.')[0]+body["did"].split('.')[1])
+		
+		response= {
+				'status': 200,
+				'message': 'Successfully deleted the file',
+				'session_token': session_token,
+			}
 		return jsonify(response)
 	'''
 		Expected response status codes:
