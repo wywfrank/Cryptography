@@ -80,15 +80,12 @@ def checkin():
 	did=raw_input("Enter unique document name (1.txt):")
 	flag=raw_input("Enter security flag (1-confidentiality, 2-integrity):")
 	if os.path.exists("documents/checkin/"+did): 
-		print "ioerror"
 		fin = open('documents/checkin/'+did, 'r')
 	elif os.path.exists("documents/checkout/"+did):
-		print "ioerror 1"
 		fin = open('documents/checkout/'+did, 'r')
 		f = open("documents/checkin/"+did,"w")
 		f.write(fin.read())
 		f.close()
-		print "ioerror 1"
 		os.remove("documents/checkout/"+did) 
 	else:
 		print "Document does not exist on client side."

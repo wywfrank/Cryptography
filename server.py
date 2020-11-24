@@ -44,7 +44,6 @@ def search_owner(conn,param):
 	cur=conn.cursor()
 	cur.execute(sql,param)
 	result=cur.fetchone()
-	conn.commit()
 	return result
 
 def insert_session(conn,row):
@@ -52,6 +51,7 @@ def insert_session(conn,row):
 		WHERE userId = ?'''
 	cur=conn.cursor()
 	cur.execute(sql,(row[1],))
+	conn.commit()
 	sql='''INSERT INTO SESSION(session_token,userId)
 		VALUES(?,?)'''
 	cur.execute(sql,row)
@@ -69,7 +69,6 @@ def search_session(conn,session_token):
 	result=cur.fetchone()
 	if result is not None:
 		result=result[0]
-	conn.commit()
 	return result
 
 
@@ -78,6 +77,8 @@ def insert_grant(conn,body):
 		WHERE CAST(strftime('%s', expire_date) AS integer) < CAST(strftime('%s', ?) AS integer) '''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
+	conn.commit()
+
 	sql='''INSERT INTO GRANT(did,userId,accessRight,expire_date)
 		VALUES(?,?,?,?)'''
 	body["expire_date"]=expire_date = datetime.datetime.now() + datetime.timedelta(seconds=int(body["expire_date"]))
@@ -90,12 +91,14 @@ def search_grant(conn,body,userId,accessRight):
 		WHERE CAST(strftime('%s', expire_date) AS integer)<CAST(strftime('%s', ?) AS integer)'''
 	cur=conn.cursor()
 	cur.execute(sql,(datetime.datetime.now(),))
+	conn.commit()
+
 	sql='''Select userId from GRANT where did=? and (userId=0 or userId =?) and (accessRight=3 or accessRight=?) '''
 	cur.execute(sql,(body["did"],userId,accessRight))
+	conn.commit()
 	result=cur.fetchone()
 	if result is not None:
 		result=result[0]
-	conn.commit()
 	return result
 
 
@@ -556,8 +559,7 @@ def main():
 	sql_create_SESSION_table = '''
 		CREATE TABLE IF NOT EXISTS SESSION 
 		(session_token text NOT NULL,
-		userId text NOT NULL,
-		timer text);
+		userId text NOT NULL);
 	'''
 	conn = create_connection(db)
 	if conn is not None:
