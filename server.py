@@ -236,7 +236,6 @@ class login(Resource):
 		h = SHA256.new(str(statement))
 		signature=base64.standard_b64decode((body["signature"]).encode("utf-8"))
 
-		success=1
 		#must ensure user ID unique!!!
 		try:
 			pkcs1_15.new(key).verify(h, signature)
@@ -249,22 +248,15 @@ class login(Resource):
 			}
 			return jsonify(response)
 		
-		if success:
-			session_token = uuid4() # TODO: Generate session token
-			# Similar response format given below can be used for all the other functions
-			conn=create_connection(db)
-			insert_session(conn,(str(session_token),str(body["userId"])))
-			response = {
-				'status': 200,
-				'message': 'Login Successful',
-				'session_token': session_token,
-			}
-		else:
-			response = {
-				'status': 700,
-				'message': 'Login Failed',
-				'session_token': session_token,
-			}
+		session_token = uuid4() # TODO: Generate session token
+		# Similar response format given below can be used for all the other functions
+		conn=create_connection(db)
+		insert_session(conn,(str(session_token),str(body["userId"])))
+		response = {
+			'status': 200,
+			'message': 'Login Successful',
+			'session_token': session_token,
+		}
 		return jsonify(response)
 
 class checkout(Resource):

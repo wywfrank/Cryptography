@@ -158,8 +158,13 @@ def logout():
 	exit() #exit the program
 
 def main():
-	login()
+	
 	option=''
+	while option='':
+		login()
+		if (json.load(open(gt_username,"r")))["status"]==200:
+			option=0
+	
 	while (option != '5'):
 		option=raw_input('''Enter the option's number: 
 				1. Checkin
