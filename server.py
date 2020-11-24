@@ -149,7 +149,7 @@ class checkin(Resource):
 		encrypted_key = ''
 
 		grantId=search_grant(conn,body,userId,1)
-		if ownerId == userId or grantId is not None: #must be owner or authorized(need to implement AUTH)
+		if ownerId == userId or grantId is not None:
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
@@ -166,19 +166,6 @@ class checkin(Resource):
 				f = open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1],"w")
 				f.write(encrypted_key)
 				f.close()
-
-				# encrypted_key= open("documents/key-"+body["did"].split('.')[0]+body["did"].split('.')[1]).read()
-				# keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
-				# cipher = PKCS1_OAEP.new(keyPri)
-				# key = cipher.decrypt(encrypted_key)
-				# encrypted_decoded=base64.b64decode(encrypted_contents)
-				# iv=encrypted_decoded[:AES.block_size]
-				# decryptor=AES.new(key,AES.MODE_CBC, iv)
-				# plain_text = decryptor.decrypt(encrypted_decoded[AES.block_size:]).decode("utf-8")
-				# last_character = plain_text[len(plain_text) - 1:]
-				# original_contents= plain_text[:-ord(last_character)]
-				# print original_contents
-				
 
 			if body["flag"]=='2':
 				keyPri=RSA.importKey(open('../certs/secure-shared-store.key').read())
