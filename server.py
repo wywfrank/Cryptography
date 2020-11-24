@@ -136,7 +136,7 @@ class checkin(Resource):
 			insert_owner(conn,row)
 		
 		ownerId,flag=search_owner(conn,(body["did"],))
-		if flag!=body["flag"]:
+		if str(flag)!=str(body["flag"]):
 			response= {
 				'status': 700,
 				'message': 'Cannot check in same document with different flag',
