@@ -137,8 +137,14 @@ def grant():
 
 	did=raw_input("Enter unique document name (1.txt):")
 	userId=raw_input("User ID to whom access should be granted (0 for all users):")
-	accessRight=raw_input("Type of acess to be granted (1 - checkin, 2 - checkout, 3 - both:")
+	accessRight=''
+	while int(accessRight)<1 or int(accessRight)>3:
+		accessRight=raw_input("Type of acesss to be granted (1 - checkin, 2 - checkout, 3 - both:")
 	expire_date=raw_input("Time duration (in seconds) for access:")
+	try:
+		expire_date=int(expire_date)
+	except:
+		exit()
 
 	data={
 		'did':did,
