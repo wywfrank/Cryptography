@@ -402,6 +402,7 @@ class delete(Resource):
 		body=json.loads(data)
 		session_token=str(body["session_token"])
 		
+		conn=create_connection(db)
 		userId=search_session(conn,(session_token,))
 		if userId is None:
 			response= {
@@ -432,14 +433,13 @@ class delete(Resource):
 		
 		sql='''DELETE FROM OWNER
 		WHERE did = ?'''
-		conn=create_connection(db)
 		cur=conn.cursor()
 		cur.execute(sql,(str(body["did"]),))
 		sql='''DELETE FROM GRANT
 		WHERE did = ?'''
 		cur.execute(sql,(str(body["did"]),))
 		conn.close()
-		
+
 		if os.path.exists("documents/"+body["did"]): 
 			os.remove("documents/"+body["did"]) 
 		else:
