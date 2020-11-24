@@ -135,7 +135,8 @@ class checkin(Resource):
 			row=(body["did"],userId,body["flag"])
 			insert_owner(conn,row)
 		
-		if did[1]!=body["flag"]:
+		ownerId,flag=search_owner(conn,(body["did"],))
+		if flag!=body["flag"]:
 			response= {
 				'status': 700,
 				'message': 'Cannot check in same document with different flag',
@@ -144,7 +145,6 @@ class checkin(Resource):
 			print response
 			return jsonify(response)
 
-		ownerId=did[0]
 		contents=str(body["contents"]) 
 		encrypted_key = ''
 
