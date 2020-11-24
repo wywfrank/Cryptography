@@ -270,7 +270,7 @@ class checkout(Resource):
 				'message': 'Check out failed since file not found on the server',
 				'session_token': session_token,
 			}
-		return jsonify(response)
+			return jsonify(response)
 		grantId=search_grant(conn,body,userId,2)
 		if ownerId != userId and (grantId is None or str(grantId)=='2'):
 			response = {
