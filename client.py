@@ -150,6 +150,7 @@ def delete():
 		Send request to server with required parameters (action = 'delete')
 		using post_request().
 	'''
+	did=raw_input("Enter unique document name (1.txt):")
 	data={
 		'did':did,
 		'session_token':json.load(open(gt_username,"r"))["session_token"],
