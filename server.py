@@ -153,7 +153,7 @@ class checkin(Resource):
 		encrypted_key = ''
 
 		grantId=search_grant(conn,body,userId,1)
-		if ownerId == userId or grantId is not None or grantId[0]==1:
+		if ownerId == userId or grantId is not None or str(grantId)=='1':
 			if body["flag"]=='1':
 				key = ''.join(chr(random.randint(0, 9)) for i in range(16))
 				iv = ''.join([chr(random.randint(0, 9)) for i in range(16)])
@@ -282,7 +282,7 @@ class checkout(Resource):
 		
 		grantId=search_grant(conn,body,userId,2)
 
-		if ownerId != userId and (grantId is None or grantId[0]==2):
+		if ownerId != userId and (grantId is None or str(grantId)=='2'):
 			response = {
 				'status': 702 ,
 				'message': 'Access denied to check out',
